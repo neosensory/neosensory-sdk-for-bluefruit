@@ -1,0 +1,23 @@
+# Syntax Coloring Map For NeosensoryBluefruit
+
+# Datatypes (KEYWORD1)
+NeosensoryBluefruit	KEYWORD1
+
+# Methods and Functions (KEYWORD2)
+begin	KEYWORD2
+startScan	KEYWORD2
+disconnect	KEYWORD2
+setDeviceId	KEYWORD2
+getDeviceAddress	KEYWORD2
+isConnected	KEYWORD2
+isAuthenticated	KEYWORD2
+sendCommand	KEYWORD2
+stopAlgorithm	KEYWORD2
+authenticateWristband	KEYWORD2
+setConnectedCallback	KEYWORD2
+setDisconnectedCallback	KEYWORD2
+setReadNotifyCallback	KEYWORD2
+vibrateAtIntensities	KEYWORD2
+turnOffAllMotors	KEYWORD2
+vibrateMotor	KEYWORD2
+num_motors	KEYWORD2
