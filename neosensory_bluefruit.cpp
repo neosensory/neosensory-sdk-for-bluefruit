@@ -39,7 +39,6 @@ NeosensoryBluefruit::NeosensoryBluefruit(char device_id[], uint8_t num_motors,
 	previous_motor_array_ = (uint8_t*)malloc(sizeof(uint8_t) * num_motors_);
 	memset(previous_motor_array_, 0, sizeof(uint8_t) * num_motors_);
 	is_authenticated_ = false;
-	stop_motors_on_disconnect = true;
 }
 
 void NeosensoryBluefruit::begin(void) {
