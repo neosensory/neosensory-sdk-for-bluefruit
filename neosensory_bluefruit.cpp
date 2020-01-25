@@ -14,7 +14,7 @@
  *  @param[in] device_id The device_id of the hardware to connect to
  */
 NeosensoryBluefruit::NeosensoryBluefruit(char device_id[], uint8_t num_motors, 
-        uint8_t min_vibration, uint8_t max_vibration)
+        uint8_t initial_min_vibration, uint8_t initial_max_vibration)
  : wb_service_uuid_ {
       0x9E, 0xCA, 0xDC, 0x24, 0x0E, 0xE5, 0xA9, 0xE0,
       0x93, 0xF3, 0xA3, 0xB5, 0x01, 0x00, 0x40, 0x6E
@@ -34,8 +34,8 @@ NeosensoryBluefruit::NeosensoryBluefruit(char device_id[], uint8_t num_motors,
 	NeoBluefruit = this;
 	setDeviceAddress(device_id);
 	num_motors_ = num_motors;
-	max_vibration = max_vibration;
-	min_vibration = min_vibration;
+	max_vibration = initial_max_vibration;
+	min_vibration = initial_min_vibration;
 	previous_motor_array_ = (uint8_t*)malloc(sizeof(uint8_t) * num_motors_);
 	memset(previous_motor_array_, 0, sizeof(uint8_t) * num_motors_);
 	is_authenticated_ = false;

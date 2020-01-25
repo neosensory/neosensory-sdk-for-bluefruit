@@ -17,7 +17,7 @@ class NeosensoryBluefruit
 
   public:
     NeosensoryBluefruit(char device_id[], uint8_t numMotors=4, 
-        uint8_t min_vibration=30, uint8_t max_vibration=255);
+        uint8_t initial_min_vibration=30, uint8_t initial_max_vibration=255);
     static NeosensoryBluefruit* NeoBluefruit;
     void begin(void);
     bool startScan(void);
