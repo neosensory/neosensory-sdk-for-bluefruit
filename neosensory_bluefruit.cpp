@@ -157,14 +157,14 @@ uint8_t NeosensoryBluefruit::num_motors(void) {
  */
 uint8_t linearIntensityToMotorSpace(
 	float linear_intensity, uint8_t min_intensity, uint8_t max_intensity) {
-  if (linear_intensity <= 0) {
-    return 0;
-  }
-  if (linear_intensity >= 1) {
-  	return max_intensity;
-  }
-  return uint8_t((exp(linear_intensity) - 1) /
-                 (exp(1) - 1) * (max_intensity - min_intensity) + min_intensity);
+		if (linear_intensity <= 0) {
+	return 0;
+	}
+	if (linear_intensity >= 1) {
+		return max_intensity;
+	}
+	return uint8_t((exp(linear_intensity) - 1) /
+	             (exp(1) - 1) * (max_intensity - min_intensity) + min_intensity);
 }
 
 /** @brief Translates an array of intensities from linear space to motor space
