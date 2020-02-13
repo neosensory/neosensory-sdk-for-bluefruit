@@ -13,6 +13,7 @@ NeosensoryBluefruit NeoBluefruit("E1 D7 70 EF CA 3D");
 
 int motor = 0;
 float intensity = 0;
+float **rumble_frames;
 
 void setup() {
   NeoBluefruit.begin();
@@ -21,6 +22,7 @@ void setup() {
   NeoBluefruit.setReadNotifyCallback(onReadNotify);
   NeoBluefruit.startScan();
   Serial.begin(9600);
+  set_rumble_frames();
 }
 
 void loop() {
@@ -32,10 +34,28 @@ void loop() {
       motor++;
       if (motor >= NeoBluefruit.num_motors()) {
         motor = 0;
+        rumble();
+        rumble();
+        rumble();
       }
     }
     delay(50);
   }
+}
+
+void set_rumble_frames() {
+  rumble_frames = new float*[NeoBluefruit.max_frames_per_bt_package()];
+    for (int i = 0; i < NeoBluefruit.max_frames_per_bt_package(); i++) {
+    rumble_frames[i] = new float[NeoBluefruit.num_motors()];
+    for (int j = 0; j < NeoBluefruit.num_motors(); j++) {
+      rumble_frames[i][j] = (i % 2) == (j % 2);
+    }
+  }
+}
+
+void rumble() {
+  NeoBluefruit.vibrateMotors(rumble_frames, NeoBluefruit.max_frames_per_bt_package());
+  delay((NeoBluefruit.max_frames_per_bt_package()) * NeoBluefruit.firmware_frame_duration());
 }
 
 /* Callbacks */
