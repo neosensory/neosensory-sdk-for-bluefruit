@@ -16,12 +16,12 @@ float intensity = 0;
 float **rumble_frames;
 
 void setup() {
+  Serial.begin(9600);
   NeoBluefruit.begin();
   NeoBluefruit.setConnectedCallback(onConnected);
   NeoBluefruit.setDisconnectedCallback(onDisconnected);
   NeoBluefruit.setReadNotifyCallback(onReadNotify);
   NeoBluefruit.startScan();
-  Serial.begin(9600);
   set_rumble_frames();
 }
 
