@@ -1,5 +1,5 @@
 /*
-  NeosensoryBluefruitExample.ino - Example for using
+  connect_and_vibrate.ino - Example for using
   NeosensoryBluefruit library. Requires a Neosensory
   Buzz and an Adafruit Feather board (or other board
   that works with Adafruit's Bluefruit library).
