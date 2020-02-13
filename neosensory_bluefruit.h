@@ -40,12 +40,15 @@ class NeosensoryBluefruit
     void disconnectCallback(uint16_t conn_handle, uint8_t reason);
 
     /* Vibration */
-    void vibrateAtIntensities(float intensities[]);
+    void vibrateMotors(float intensities[]);
+    void vibrateMotors(float *intensities[], int num_frames);
     void turnOffAllMotors(void);
     void vibrateMotor(uint8_t motor, float intensity);
     uint8_t min_vibration;
     uint8_t max_vibration;
-    uint8_t num_motors();
+    uint8_t num_motors(void);
+    uint8_t firmware_frame_duration(void);
+    uint8_t max_frames_per_bt_package(void);
 
   private:
     uint8_t device_address_[BLE_GAP_ADDR_LEN];
@@ -56,9 +59,12 @@ class NeosensoryBluefruit
 
     /* Vibrations */
     uint8_t num_motors_;
+    uint8_t firmware_frame_duration_;
+    uint8_t max_frames_per_bt_package_;
     uint8_t *previous_motor_array_;
     void getMotorIntensitiesFromLinArray(
         float lin_array[], uint8_t motor_space_array[], size_t array_size);
+    void sendMotorCommand(uint8_t motor_intensities[], size_t num_frames=1);
 
     /* External Callbacks */
     ConnectedCallback externalConnectedCallback;

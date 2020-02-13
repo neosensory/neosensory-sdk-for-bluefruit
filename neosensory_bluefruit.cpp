@@ -36,6 +36,12 @@ NeosensoryBluefruit::NeosensoryBluefruit(char device_id[], uint8_t num_motors,
 	num_motors_ = num_motors;
 	max_vibration = initial_max_vibration;
 	min_vibration = initial_min_vibration;
+
+	// TODO: get this from firmware rather than hardcoding
+	firmware_frame_duration_ = 16;
+	uint8_t mtu = 247;
+	max_frames_per_bt_package_ = (uint8_t)((mtu - 17) / (num_motors_ * (4 / 3.0f)));
+
 	previous_motor_array_ = (uint8_t*)malloc(sizeof(uint8_t) * num_motors_);
 	memset(previous_motor_array_, 0, sizeof(uint8_t) * num_motors_);
 	is_authenticated_ = false;
@@ -152,6 +158,18 @@ uint8_t NeosensoryBluefruit::num_motors(void) {
 	return num_motors_;
 }
 
+/** @brief Get firmware frame duration in milliseconds
+ */
+uint8_t NeosensoryBluefruit::firmware_frame_duration(void) {
+	return firmware_frame_duration_;
+}
+
+/** @brief Get firmware frame duration in milliseconds
+ */
+uint8_t NeosensoryBluefruit::max_frames_per_bt_package(void) {
+	return max_frames_per_bt_package_;
+}
+
 /** @brief Translates a linear intensity value into a 
  *  linearly perceived motor intensity value
  */
@@ -220,6 +238,22 @@ void encodeMotorIntensities(
 		encoded_motor_intensities, (char*)motor_intensities, input_arr_size); 
 }
 
+/** @brief Converts motor intensities to base64 encoded array and sends appropriate command
+ *  @param[in] motor_intensities The motor intensities to send. If multiple frames, this
+ *  is a flattened array. 
+ *  @param[in] num_frames The number of frames in motor_intensities. Cannot be more 
+ *  than max_frames_per_bt_package_.
+ */
+void NeosensoryBluefruit::sendMotorCommand(uint8_t motor_intensities[], size_t num_frames) {
+	num_frames = min(max_frames_per_bt_package_, num_frames);
+	char encoded_motor_intensities[base64_enc_len(sizeof(uint8_t) * num_motors_ * num_frames)];
+	encodeMotorIntensities(
+		motor_intensities, num_motors_ * num_frames, encoded_motor_intensities);
+	sendCommand("motors vibrate ");
+	sendCommand(encoded_motor_intensities);
+	sendCommand("\n");
+}
+
 /** @brief Cause the wristband to vibrate at the given intensities
  *  @param[in] intensities An array of float values that denote the linear
  *  intensity values, between 0 and 1. Each index in this array corresponds
@@ -230,7 +264,7 @@ void encodeMotorIntensities(
  *  @note This will not send a new command if the last sent array is identical
  *  to the new array of intensities.
  */
-void NeosensoryBluefruit::vibrateAtIntensities(float intensities[]) {
+void NeosensoryBluefruit::vibrateMotors(float intensities[]) {
 	uint8_t motor_intensities[num_motors_];
 	getMotorIntensitiesFromLinArray(intensities, motor_intensities, num_motors_);
 
@@ -239,12 +273,34 @@ void NeosensoryBluefruit::vibrateAtIntensities(float intensities[]) {
 	}
 	memcpy(previous_motor_array_, motor_intensities, sizeof(uint8_t) * num_motors_);
 
-	char encoded_motor_intensities[base64_enc_len(sizeof(uint8_t) * num_motors_)];
-	encodeMotorIntensities(
-		motor_intensities, num_motors_, encoded_motor_intensities);
-	sendCommand("motors vibrate ");
-	sendCommand(encoded_motor_intensities);
-	sendCommand("\n");
+	sendMotorCommand(motor_intensities);
+}
+
+/** @brief Cause the wristband to vibrate at the given intensities, for multiple frames
+ *  @param[in] intensities A nested array of float values that denote the linear
+ *  intensity values, between 0 and 1. Each index in the inner arrays corresponds
+ *  to a motor. The value at that index corresponds to the intensity that motor
+ *  will play at. A value of 0 is off, a value of 1 is max_vibration, and any
+ *  value between is a linearly perceived value between min_vibration and
+ *  max_vibration. The outer indices correspond to individual frames. Each frame
+ *  is played by the firmware at firmware_frame_duration intervals.
+ *  @param[in] num_frames The number of frames. Cannot be more than max_frames_per_bt_package_.
+ *  @note This will send all frames, even if any or all are identical to each other.
+ */
+void NeosensoryBluefruit::vibrateMotors(float *intensities[], int num_frames) {
+	num_frames = min(max_frames_per_bt_package_, num_frames);
+	float flat_intensities[num_motors_ * num_frames];
+	for (int i = 0; i < num_frames; ++i)
+	{
+		for (int j = 0; j < num_motors_; ++j)
+		{
+			flat_intensities[i * num_motors_ + j] = intensities[i][j];
+		}
+	}
+	uint8_t motor_intensities[num_motors_ * num_frames];
+	getMotorIntensitiesFromLinArray(flat_intensities, motor_intensities, num_motors_ * num_frames);
+
+	sendMotorCommand(motor_intensities, num_frames);
 }
 
 /** @brief Turn off all the motors
@@ -252,7 +308,7 @@ void NeosensoryBluefruit::vibrateAtIntensities(float intensities[]) {
 void NeosensoryBluefruit::turnOffAllMotors(void) {
 	float motor_intensities[num_motors_];
 	memset(motor_intensities, 0, sizeof(float) * num_motors_);
-	vibrateAtIntensities(motor_intensities);
+	vibrateMotors(motor_intensities);
 }
 
 /** @brief Turn on a single motor at an intensity
@@ -263,7 +319,7 @@ void NeosensoryBluefruit::vibrateMotor(uint8_t motor, float intensity) {
 	float motor_intensities[num_motors_];
 	memset(motor_intensities, 0, sizeof(float) * num_motors_);
 	motor_intensities[motor] = intensity;
-	vibrateAtIntensities(motor_intensities);
+	vibrateMotors(motor_intensities);
 }
 
 

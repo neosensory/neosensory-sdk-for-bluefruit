@@ -17,7 +17,9 @@ authenticateWristband	KEYWORD2
 setConnectedCallback	KEYWORD2
 setDisconnectedCallback	KEYWORD2
 setReadNotifyCallback	KEYWORD2
-vibrateAtIntensities	KEYWORD2
+vibrateMotors	KEYWORD2
 turnOffAllMotors	KEYWORD2
 vibrateMotor	KEYWORD2
 num_motors	KEYWORD2
+firmware_frame_duration	KEYWORD2
+max_frames_per_bt_package	KEYWORD2
