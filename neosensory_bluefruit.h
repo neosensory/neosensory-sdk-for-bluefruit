@@ -21,7 +21,6 @@ class NeosensoryBluefruit
     static NeosensoryBluefruit* NeoBluefruit;
     void begin(void);
     bool startScan(void);
-    void disconnect(void);
     void setDeviceId(char new_device_id[]);
     uint8_t* getDeviceAddress(void);
     bool isConnected(void);

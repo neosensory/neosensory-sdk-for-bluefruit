@@ -111,13 +111,6 @@ bool NeosensoryBluefruit::startScan(void)
 	Bluefruit.Scanner.start(0);
 }
 
-/** @brief Disconnect from connected device
- */
-void NeosensoryBluefruit::disconnect(void)
-{
-	Bluefruit.disconnect(Bluefruit.connHandle());
-}
-
 bool NeosensoryBluefruit::isConnected(void) {
 	return Bluefruit.Central.connected();
 }
