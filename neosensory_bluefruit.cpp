@@ -115,7 +115,7 @@ bool NeosensoryBluefruit::startScan(void)
  */
 void NeosensoryBluefruit::disconnect(void)
 {
-	// Bluefruit.disconnect();
+	Bluefruit.disconnect(Bluefruit.connHandle());
 }
 
 bool NeosensoryBluefruit::isConnected(void) {
