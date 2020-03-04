@@ -28,6 +28,7 @@ class NeosensoryBluefruit
     void sendCommand(char cmd[]);
     void stopAlgorithm(void);
     void authenticateWristband(void);
+    void acceptTermsAndConditions(void);
     void setConnectedCallback(ConnectedCallback);
     void setDisconnectedCallback(DisconnectedCallback);
     void setReadNotifyCallback(ReadNotifyCallback);

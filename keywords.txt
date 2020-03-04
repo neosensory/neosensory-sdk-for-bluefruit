@@ -14,6 +14,7 @@ isAuthenticated	KEYWORD2
 sendCommand	KEYWORD2
 stopAlgorithm	KEYWORD2
 authenticateWristband	KEYWORD2
+acceptTermsAndConditions	KEYWORD2
 setConnectedCallback	KEYWORD2
 setDisconnectedCallback	KEYWORD2
 setReadNotifyCallback	KEYWORD2

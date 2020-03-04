@@ -129,7 +129,13 @@ void NeosensoryBluefruit::sendCommand(char cmd[]) {
 /** @brief Send a command to the wristband to authenticate developer options
  */
 void NeosensoryBluefruit::authenticateWristband(void) {
-	sendCommand("auth as developer\naccept\n");
+	sendCommand("auth as developer\n");
+}
+
+/** @brief Send a command to the wristband to accept developer terms and conditions
+ */
+void NeosensoryBluefruit::acceptTermsAndConditions(void) {
+	sendCommand("accept\n");
 
 	// TODO: Wait for successful authentication response
 	// rather than assuming success

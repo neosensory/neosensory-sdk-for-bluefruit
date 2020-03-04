@@ -71,6 +71,7 @@ void onConnected(bool success) {
   // send developer authentication command and commands
   // to stop sound-to-touch algorithm.
   NeoBluefruit.authenticateWristband();
+  NeoBluefruit.acceptTermsAndConditions();
   NeoBluefruit.stopAlgorithm();
 }
 
