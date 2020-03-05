@@ -1,8 +1,25 @@
-/*
-  Neosensory_Bluefruit.h - Library for connecting to 
-  Neosensory hardware via Adafruit's Bluefruit library.
-  Created by Mike Perrotta, January 23, 2020.
-*/
+/*!
+ * @file neosensory_bluefruit.h
+ *
+ * @mainpage Neosensory Bluefruit BLE helper.
+ *
+ * @section intro_sec Introduction
+ *
+ * This is the documentation for Neosensory's NeosensoryBluefruit library,
+ * which handles connecting to and communicating with a Neosensory device over BLE. 
+ * It heavily relies on Adafruit's Bluefruit library for BLE. 
+ * It also opens all developer accessible CLI commands with the Neosensory hardware. 
+ * It also offers some higher level motor vibration functions.
+ *
+ * @section author Author
+ *
+ * Written by Mike Perrotta for Neosensory, Inc.
+ *
+ * @section license License
+ *
+ *
+ */
+
 #ifndef NeosensoryBluefruit_h
 #define NeosensoryBluefruit_h
 
@@ -198,7 +215,7 @@ class NeosensoryBluefruit
      */
     uint8_t num_motors(void);
 
-    /** @brief Turn off all the motors
+    /** @brief Turn off all the motors.
      */
     void turnOffAllMotors(void);
 
