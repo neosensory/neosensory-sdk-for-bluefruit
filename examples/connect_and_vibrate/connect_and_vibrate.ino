@@ -3,7 +3,7 @@
   NeosensoryBluefruit library. Requires a Neosensory
   Buzz and an Adafruit Feather board (or other board
   that works with Adafruit's Bluefruit library).
-  
+
   Created by Mike V. Perrotta, January 23, 2020.
 */
 
@@ -24,7 +24,7 @@ void setup() {
   NeoBluefruit.setReadNotifyCallback(onReadNotify);
   NeoBluefruit.startScan();
   set_rumble_frames();
-  while(!NeoBluefruit.isConnected() || !NeoBluefruit.isAuthenticated()) {}
+  while (!NeoBluefruit.isConnected() || !NeoBluefruit.isAuthenticated()) {}
   NeoBluefruit.deviceInfo();
   NeoBluefruit.deviceBattery();
 }
@@ -49,7 +49,7 @@ void loop() {
 
 void set_rumble_frames() {
   rumble_frames = new float*[NeoBluefruit.max_frames_per_bt_package()];
-    for (int i = 0; i < NeoBluefruit.max_frames_per_bt_package(); i++) {
+  for (int i = 0; i < NeoBluefruit.max_frames_per_bt_package(); i++) {
     rumble_frames[i] = new float[NeoBluefruit.num_motors()];
     for (int j = 0; j < NeoBluefruit.num_motors(); j++) {
       rumble_frames[i][j] = (i % 2) == (j % 2);
