@@ -7,7 +7,6 @@
 #define NeosensoryBluefruit_h
 
 #include "Arduino.h"
-#include <ArduinoJson.h>
 #include <bluefruit.h>
 
 class NeosensoryBluefruit

@@ -8,7 +8,6 @@
 #include "neosensory_bluefruit.h"
 #include <Base64.h>
 #include <bluefruit.h>
-#include <stdlib.h>
 
 NeosensoryBluefruit::NeosensoryBluefruit(char device_id[], uint8_t num_motors, 
 				uint8_t initial_min_vibration, uint8_t initial_max_vibration)
