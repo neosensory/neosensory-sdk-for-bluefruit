@@ -1,14 +1,35 @@
-/*
-  Neosensory_Bluefruit.h - Library for connecting to 
-  Neosensory hardware via Adafruit's Bluefruit library.
-  Created by Mike Perrotta, January 23, 2020.
-*/
+/*!
+ * @file neosensory_bluefruit.h
+ *
+ * @mainpage Neosensory Bluefruit BLE helper.
+ *
+ * @section intro_sec Introduction
+ *
+ * This is the documentation for Neosensory's NeosensoryBluefruit library,
+ * which handles connecting to and communicating with a Neosensory device over BLE. 
+ * It heavily relies on Adafruit's Bluefruit library for BLE. 
+ * It also opens all developer accessible CLI commands with the Neosensory hardware. 
+ * It also offers some higher level motor vibration functions.
+ *
+ * @section author Author
+ *
+ * Written by Mike Perrotta for Neosensory, Inc.
+ *
+ * @section license License
+ *
+ *
+ */
+
 #ifndef NeosensoryBluefruit_h
 #define NeosensoryBluefruit_h
 
 #include "Arduino.h"
 #include <bluefruit.h>
 
+/** @brief Class that handles connecting to and communicating with a Neosensory device over BLE. 
+ *  Relies heavily on Adafruit's Bluefruit library for BLE. Opens all developer accessible
+ *  CLI commands with Neosensory hardware. Also offers some higher level motor vibration functions.
+ */
 class NeosensoryBluefruit
 {
     typedef void (*ConnectedCallback)(bool); 
@@ -22,10 +43,10 @@ class NeosensoryBluefruit
      *  @param[in] initial_min_vibration The mininum vibration intensity, between 0 and 255. Should be less than initial_max_vibration.
      *  @param[in] initial_max_vibration The maximum vibration intensity, between 0 and 255. Should be greater than initial_min_vibration.
      */
-    NeosensoryBluefruit(char device_id[]="", uint8_t numMotors=4, 
+    NeosensoryBluefruit(char device_id[]="", uint8_t num_motors=4, 
         uint8_t initial_min_vibration=30, uint8_t initial_max_vibration=255);
 
-    static NeosensoryBluefruit* NeoBluefruit;
+    static NeosensoryBluefruit* NeoBluefruit; /**< Static, singleton instance of NeosensoryBluefruit. Used for setting callbacks. */
 
     /** @brief Returns true if NeosensoryBluefruit has connected to a device.
      *  @return True if NeosensoryBluefruit has connected to a device.
@@ -105,6 +126,10 @@ class NeosensoryBluefruit
      *  @note The device will no longer respond to motor vibrate commands.
      */
     void motorsStop(void);
+
+    /** @brief Send a command to the wristband
+     *  @param[in] cmd Command to send
+     */
     void sendCommand(char cmd[]);
 
     /** @brief Stops the sound-to-touch algorithm that runs on the wristband.
@@ -115,7 +140,7 @@ class NeosensoryBluefruit
 
     /* BLE Callbacks */
 
-    /** @brief Callback when central connects
+    /** @brief Callback when central connects.
      *  @param conn_handle Connection Handle that central connected to
      *  @note Checks that wristband services and characteristics are present,
      *  enables notification callbacks from read characteristic, 
@@ -124,29 +149,35 @@ class NeosensoryBluefruit
      */
     void connectCallback(uint16_t conn_handle);
 
-    /** @brief Callback when central disconnects
+    /** @brief Callback when central disconnects.
+     *  @param[in] conn_handle Connection handle that central is disconnecting from.
+     *  @param[in] reason Reason for disconnect.
      */
     void disconnectCallback(uint16_t conn_handle, uint8_t reason);
-    
-    /** @brief Callback when read characteristic has data to be read
+
+    /** @brief Callback when read characteristic has data to be read.
+     *  @param[in] chr Characteristic that read data.
+     *  @param[in] data Data read.
+     *  @param[in] len Length of data array.
      */
     void readNotifyCallback(BLEClientCharacteristic* chr, uint8_t* data, uint16_t len);
 
-    /** @brief Callback when a device is found during scan
+    /** @brief Callback when a device is found during scan.
+     *  @param[in] report Report of device that scan found.
      *  @note This is set to automatically connect to a found
      *  device if its address matches our desired device address.
      *  Otherwise, the scanner resumes scanning.
      */
     void scanCallback(ble_gap_evt_adv_report_t* report);
 
-    /** @brief Sets a callback that gets called when NeoBluefruit connects to a device
+    /** @brief Sets a callback that gets called when NeoBluefruit connects to a device.
      *  @param[in] connectedCallback The function to call. Takes a bool argument, which
      *  will be true if connection resulted in successfully finding all services and
      *  characteristics, else false.
      */
     void setConnectedCallback(ConnectedCallback);
 
-    /** @brief Sets a callback that gets called 
+    /** @brief Sets a callback that gets called.
      *  when NeoBluefruit disconnects from a device
      *  @param[in] disconnectedCallback The function to call.
      */
@@ -160,27 +191,36 @@ class NeosensoryBluefruit
 
     /* Vibration */
 
-    /** @brief Get firmware frame duration in milliseconds
+    /** @brief Get firmware frame duration in milliseconds.
+     *  @return Frame duration of the firmware in milliseconds.
+     *  @note When multiple motor frames are sent to the wristband, they
+     *  will each play for this duration (or longer, if no subsequent motor
+     *  frame has been sent).
      */
     uint8_t firmware_frame_duration(void);
 
-    /** @brief Get firmware frame duration in milliseconds
+    /** @brief Get maximum number of frames allowed in a Bluetooth packet.
+     *  @return Max frames allowed in a Bluetooth packet.
      */
     uint8_t max_frames_per_bt_package(void);
-    uint8_t max_vibration;
-    uint8_t min_vibration;
+
+    uint8_t max_vibration; /**< Maximum vibration intensity, between 0 and 255. */
+
+    uint8_t min_vibration; /**< Minimum vibration intensity, between 0 and 255. */
 
     /** @brief Get number of motors
+     *  @return The number of motors this instance of NeosensoryBluetooth 
+     *  expects in the target device.
      */
     uint8_t num_motors(void);
 
-    /** @brief Turn off all the motors
+    /** @brief Turn off all the motors.
      */
     void turnOffAllMotors(void);
 
     /** @brief Turn on a single motor at an intensity
      *  @param[in] motor Index of motor to vibrate
-     *  @param[in] float Intensity to vibrate motor at, between 0 and 1
+     *  @param[in] intensity Intensity to vibrate motor at, between 0 and 1
      */
     void vibrateMotor(uint8_t motor, float intensity);
 
