@@ -47,6 +47,8 @@ NeosensoryBluefruit::NeosensoryBluefruit(char device_id[], uint8_t num_motors,
 	is_authenticated_ = false;
 }
 
+/* @brief Begins Bluetooth components of NeosensoryBluefruit.
+ */
 void NeosensoryBluefruit::begin(void) {
 	
 	// Initialize Bluefruit with 1 central connection
