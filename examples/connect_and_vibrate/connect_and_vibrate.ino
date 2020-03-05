@@ -24,13 +24,13 @@ void setup() {
   NeoBluefruit.setReadNotifyCallback(onReadNotify);
   NeoBluefruit.startScan();
   set_rumble_frames();
-  while (!NeoBluefruit.isConnected() || !NeoBluefruit.isAuthenticated()) {}
+  while (!NeoBluefruit.isConnected() || !NeoBluefruit.isAuthorized()) {}
   NeoBluefruit.deviceInfo();
   NeoBluefruit.deviceBattery();
 }
 
 void loop() {
-  if (NeoBluefruit.isConnected() && NeoBluefruit.isAuthenticated()) {
+  if (NeoBluefruit.isConnected() && NeoBluefruit.isAuthorized()) {
     NeoBluefruit.vibrateMotor(motor, intensity);
     intensity += 0.1;
     if (intensity > 1) {

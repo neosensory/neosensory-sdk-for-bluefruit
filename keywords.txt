@@ -10,7 +10,7 @@ disconnect	KEYWORD2
 setDeviceId	KEYWORD2
 getDeviceAddress	KEYWORD2
 isConnected	KEYWORD2
-isAuthenticated	KEYWORD2
+isAuthorized	KEYWORD2
 sendCommand	KEYWORD2
 stopAlgorithm	KEYWORD2
 authorizeDeveloper	KEYWORD2

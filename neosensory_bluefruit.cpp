@@ -11,7 +11,10 @@
 #include <stdlib.h>
 
 /** @brief Constructor for new NeosensoryBluefruit object
- *	@param[in] device_id The device_id of the hardware to connect to
+ *	@param[in] device_id The device_id of the hardware to connect to. Leave blank to connect to any Neosensory device.
+ *  @param[in] num_motors The number of vibrating motors this device has.
+ *  @param[in] initial_min_vibration The mininum vibration intensity, between 0 and 255. Should be less than initial_max_vibration.
+ *  @param[in] initial_max_vibration The maximum vibration intensity, between 0 and 255. Should be greater than initial_min_vibration.
  */
 NeosensoryBluefruit::NeosensoryBluefruit(char device_id[], uint8_t num_motors, 
 				uint8_t initial_min_vibration, uint8_t initial_max_vibration)
@@ -44,13 +47,13 @@ NeosensoryBluefruit::NeosensoryBluefruit(char device_id[], uint8_t num_motors,
 
 	previous_motor_array_ = (uint8_t*)malloc(sizeof(uint8_t) * num_motors_);
 	memset(previous_motor_array_, 0, sizeof(uint8_t) * num_motors_);
-	is_authenticated_ = false;
+	is_authorized_ = false;
 }
 
 
 /* Bluetooth */
 
-/* @brief Begins Bluetooth components of NeosensoryBluefruit.
+/** @brief Begins Bluetooth components of NeosensoryBluefruit.
  */
 void NeosensoryBluefruit::begin(void) {
 	
@@ -92,7 +95,7 @@ void NeosensoryBluefruit::setDeviceAddress(char device_id[])
 
 /** @brief Sets new device ID for central to search for
  *	@param[in] new_device_id New device id to search for.
- *  If is an empty array, we will connect to any Neosensory device. 
+ *  If is an empty array, NeosensoryBluefruit will connect to any Neosensory device. 
  *	@note Does not restart scan, just sets device id for
  *	use in next scan.
  */
@@ -104,10 +107,11 @@ void NeosensoryBluefruit::setDeviceId(char new_device_id[]) {
 }
 
 /** @brief Get address of device to connect to
- *	@return Byte array of address to connect to
+ *	@return Byte array of address to connect to, or -1 if not set.
  */
 uint8_t* NeosensoryBluefruit::getDeviceAddress(void)
 {
+	if (connect_to_any_neo_device_) return -1;
 	return device_address_;
 }
 
@@ -120,14 +124,17 @@ bool NeosensoryBluefruit::startScan(void)
 	Bluefruit.Scanner.start(0);
 }
 
+/** @brief Returns true if NeosensoryBluefruit has connected to a device.
+ *  @return True if NeosensoryBluefruit has connected to a device.
+ */
 bool NeosensoryBluefruit::isConnected(void) {
 	return Bluefruit.Central.connected();
 }
 
 /** @brief Checks that a report address, found during a scan,
- * matches the address of the device we are searching for.
- * @param[in] foundAddress The address found during the scan.
- * @note Address will be reversed order from band name array.
+ *  matches the address of the device NeosensoryBluefruit is searching for.
+ *  @param[in] foundAddress The address found during the scan.
+ *  @note Address will be reversed order from band name array.
  */
 bool NeosensoryBluefruit::checkAddressMatches(uint8_t foundAddress[]) {
 	for (int i = 0; i < BLE_GAP_ADDR_LEN; i++) {
@@ -141,7 +148,7 @@ bool NeosensoryBluefruit::checkAddressMatches(uint8_t foundAddress[]) {
 
 /** @brief Checks if the found BLE report belongs to a Neosensory device
  *  @param[in] report The found report
- *  @note For now, we are just checking that the string "Buzz" is in the 
+ *  @note For now, just checks that the string "Buzz" is in the 
  *  advertising data.
  */
 bool NeosensoryBluefruit::checkIsNeosensory(ble_gap_evt_adv_report_t* report) {
@@ -153,7 +160,7 @@ bool NeosensoryBluefruit::checkIsNeosensory(ble_gap_evt_adv_report_t* report) {
 	return found;
 }
 
-/** @brief Checks if we should connect to the found BLE report.
+/** @brief Checks if NeosensoryBluefruit should connect to the found BLE report.
  *  @param[in] report The found report
  */
 bool NeosensoryBluefruit::checkDevice(ble_gap_evt_adv_report_t* report) {
@@ -167,8 +174,11 @@ bool NeosensoryBluefruit::checkDevice(ble_gap_evt_adv_report_t* report) {
 
 /* CLI Commands */
 
-bool NeosensoryBluefruit::isAuthenticated(void) {
-	return is_authenticated_;
+/** @brief Returns true if connected device has authorized developer options.
+ *	@return True if the connected device has authorized developer options.
+ */
+bool NeosensoryBluefruit::isAuthorized(void) {
+	return is_authorized_;
 }
 
 /** @brief Send a command to the wristband
@@ -192,7 +202,8 @@ void NeosensoryBluefruit::acceptTermsAndConditions(void) {
 	sendCommand("accept\n");
 }
 
-/** @brief Stops the audio without stopping the motors.
+/** @brief Stops the sound-to-touch algorithm that runs on the wristband.
+ *  @note Stops audio and restarts the motors, which stop when audio is stopped.
  */
 void NeosensoryBluefruit::stopAlgorithm(void) {
 	audioStop();
@@ -200,7 +211,7 @@ void NeosensoryBluefruit::stopAlgorithm(void) {
 }
 
 /** @brief Get information about the connected Neosensory device.
- *  @note This can be called without authenticating 
+ *  @note This can be called without authorizing developer options.
  */
 void NeosensoryBluefruit::deviceInfo(void) {
 	sendCommand("device info\n");
@@ -264,11 +275,14 @@ void NeosensoryBluefruit::parseCliData(uint8_t* data, uint16_t len) {
 	}
 }
 
-/** @brief Handles CLI JSON responses, by granting authentication for instance.
+/** @brief Handles CLI JSON responses, by granting authorization for instance.
+ *  @note This method can be adjusted to handle more response messages. For instance,
+ *  this method could parse the JSON and see if it handles information about the battery level
+ *  and then update a variable that holds the latest read battery level.
  */
 void NeosensoryBluefruit::handleCliJson(String jsonMessage) {
 	if (jsonMessage.indexOf('Developer API access granted!') != -1) {
-		is_authenticated_ = true;
+		is_authorized_ = true;
 	}
 }
 
@@ -495,7 +509,7 @@ void NeosensoryBluefruit::connectCallback(uint16_t conn_handle)
  */
 void NeosensoryBluefruit::disconnectCallback(
 	uint16_t conn_handle, uint8_t reason) {
-	is_authenticated_ = false;
+	is_authorized_ = false;
 	externalDisconnectedCallback(conn_handle, reason);
 }
 

@@ -21,7 +21,7 @@ class NeosensoryBluefruit
         uint8_t initial_min_vibration=30, uint8_t initial_max_vibration=255);
     static NeosensoryBluefruit* NeoBluefruit;
 
-    bool isAuthenticated(void);
+    bool isAuthorized(void);
     bool isConnected(void);
     bool startScan(void);
     uint8_t* getDeviceAddress(void);
@@ -66,7 +66,7 @@ class NeosensoryBluefruit
     bool checkDevice(ble_gap_evt_adv_report_t* report);
     bool checkIsNeosensory(ble_gap_evt_adv_report_t* report);
     bool connect_to_any_neo_device_;
-    bool is_authenticated_;
+    bool is_authorized_;
     uint8_t device_address_[BLE_GAP_ADDR_LEN];
     void setDeviceAddress(char device_id[]);
 
