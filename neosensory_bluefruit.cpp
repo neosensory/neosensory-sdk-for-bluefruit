@@ -153,9 +153,6 @@ bool NeosensoryBluefruit::isAuthorized(void) {
 	return is_authorized_;
 }
 
-/** @brief Send a command to the wristband
- *	@param[in] cmd Command to send
- */
 void NeosensoryBluefruit::sendCommand(char cmd[]) {
 	wb_write_characteristic_.write(cmd, strlen(cmd));
 }
