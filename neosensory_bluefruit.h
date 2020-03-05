@@ -66,7 +66,6 @@ class NeosensoryBluefruit
     bool checkAddressMatches(uint8_t foundAddress[]);
     bool checkIsNeosensory(ble_gap_evt_adv_report_t* report);
     bool is_authenticated_;
-    char read_message_[1024];
 
     /* Vibrations */
     uint8_t num_motors_;
