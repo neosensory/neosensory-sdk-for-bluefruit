@@ -9,7 +9,8 @@
 
 #include <neosensory_bluefruit.h>
 
-NeosensoryBluefruit NeoBluefruit("F2 AD 50 EA 96 31");
+NeosensoryBluefruit NeoBluefruit;
+// NeosensoryBluefruit NeoBluefruit("F2 AD 50 EA 96 31");
 
 int motor = 0;
 float intensity = 0;

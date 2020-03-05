@@ -17,7 +17,7 @@ class NeosensoryBluefruit
     typedef void (*ReadNotifyCallback)(BLEClientCharacteristic*, uint8_t*, uint16_t); 
 
   public:
-    NeosensoryBluefruit(char device_id[], uint8_t numMotors=4, 
+    NeosensoryBluefruit(char device_id[]="", uint8_t numMotors=4, 
         uint8_t initial_min_vibration=30, uint8_t initial_max_vibration=255);
     static NeosensoryBluefruit* NeoBluefruit;
     void begin(void);
@@ -53,8 +53,11 @@ class NeosensoryBluefruit
 
   private:
     uint8_t device_address_[BLE_GAP_ADDR_LEN];
+    bool connect_to_any_neo_device_;
     void setDeviceAddress(char device_id[]);
+    bool checkDevice(ble_gap_evt_adv_report_t* report);
     bool checkAddressMatches(uint8_t foundAddress[]);
+    bool checkIsNeosensory(ble_gap_evt_adv_report_t* report);
     bool is_authenticated_;
     char read_message_[1024];
 

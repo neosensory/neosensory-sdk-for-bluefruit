@@ -32,7 +32,7 @@ NeosensoryBluefruit::NeosensoryBluefruit(char device_id[], uint8_t num_motors,
  , wb_read_characteristic_(wb_read_char_uuid_)
 {
 	NeoBluefruit = this;
-	setDeviceAddress(device_id);
+	setDeviceId(device_id);
 	num_motors_ = num_motors;
 	max_vibration = initial_max_vibration;
 	min_vibration = initial_min_vibration;
@@ -86,12 +86,16 @@ void NeosensoryBluefruit::setDeviceAddress(char device_id[])
 }
 
 /** @brief Sets new device ID for central to search for
- *	@param[in] new_device_id New device id to search for
+ *	@param[in] new_device_id New device id to search for.
+ *  If is an empty array, we will connect to any Neosensory device. 
  *	@note Does not restart scan, just sets device id for
  *	use in next scan.
  */
 void NeosensoryBluefruit::setDeviceId(char new_device_id[]) {
-	setDeviceAddress(new_device_id);
+	connect_to_any_neo_device_ = sizeof(new_device_id <= 0);
+	if (!connect_to_any_neo_device_) {
+		setDeviceAddress(new_device_id);
+	}
 }
 
 /** @brief Get address of device to connect to
@@ -334,6 +338,31 @@ bool NeosensoryBluefruit::checkAddressMatches(uint8_t foundAddress[]) {
 	return true;
 }
 
+/** @brief Checks if the found BLE report belongs to a Neosensory device
+ *  @param[in] report The found report
+ *  @note For now, we are just checking that the string "Buzz" is in the 
+ *  advertising data.
+ */
+bool NeosensoryBluefruit::checkIsNeosensory(ble_gap_evt_adv_report_t* report) {
+	String advertising_data = "";
+	for (int i = 7; i < report->data.len; i++) {
+		advertising_data += (char)report->data.p_data[i];
+	}
+	bool found = advertising_data.indexOf("Buzz") != -1;
+	return found;
+}
+
+/** @brief Checks if we should connect to the found BLE report.
+ *  @param[in] report The found report
+ */
+bool NeosensoryBluefruit::checkDevice(ble_gap_evt_adv_report_t* report) {
+	if (connect_to_any_neo_device_) {
+		return checkIsNeosensory(report);
+	} else {
+		return checkAddressMatches(report->peer_addr.addr);
+	}
+}
+
 /** @brief Callback when a device is found during scan
  *	@note This is set to automatically connect to a found
  *	device if its address matches our desired device address.
@@ -341,7 +370,7 @@ bool NeosensoryBluefruit::checkAddressMatches(uint8_t foundAddress[]) {
  */
 void NeosensoryBluefruit::scanCallback(ble_gap_evt_adv_report_t* report)
 {
-	if (checkAddressMatches(report->peer_addr.addr)) {
+	if (checkDevice(report)) {
 		Bluefruit.Central.connect(report);
 	} else {
 		Bluefruit.Scanner.resume();
