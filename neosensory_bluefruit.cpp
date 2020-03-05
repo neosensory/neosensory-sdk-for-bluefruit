@@ -10,12 +10,6 @@
 #include <bluefruit.h>
 #include <stdlib.h>
 
-/** @brief Constructor for new NeosensoryBluefruit object
- *	@param[in] device_id The device_id of the hardware to connect to. Leave blank to connect to any Neosensory device.
- *  @param[in] num_motors The number of vibrating motors this device has.
- *  @param[in] initial_min_vibration The mininum vibration intensity, between 0 and 255. Should be less than initial_max_vibration.
- *  @param[in] initial_max_vibration The maximum vibration intensity, between 0 and 255. Should be greater than initial_min_vibration.
- */
 NeosensoryBluefruit::NeosensoryBluefruit(char device_id[], uint8_t num_motors, 
 				uint8_t initial_min_vibration, uint8_t initial_max_vibration)
  : wb_service_uuid_ {
@@ -53,10 +47,7 @@ NeosensoryBluefruit::NeosensoryBluefruit(char device_id[], uint8_t num_motors,
 
 /* Bluetooth */
 
-/** @brief Begins Bluetooth components of NeosensoryBluefruit.
- */
 void NeosensoryBluefruit::begin(void) {
-	
 	// Initialize Bluefruit with 1 central connection
 	Bluefruit.begin(0, 1);
 	Bluefruit.setName("Neosensory Bluefruit Central Device");
@@ -93,12 +84,6 @@ void NeosensoryBluefruit::setDeviceAddress(char device_id[])
 	}
 }
 
-/** @brief Sets new device ID for central to search for
- *	@param[in] new_device_id New device id to search for.
- *  If is an empty array, NeosensoryBluefruit will connect to any Neosensory device. 
- *	@note Does not restart scan, just sets device id for
- *	use in next scan.
- */
 void NeosensoryBluefruit::setDeviceId(char new_device_id[]) {
 	connect_to_any_neo_device_ = sizeof(new_device_id) <= 0;
 	if (!connect_to_any_neo_device_) {
@@ -106,27 +91,17 @@ void NeosensoryBluefruit::setDeviceId(char new_device_id[]) {
 	}
 }
 
-/** @brief Get address of device to connect to
- *	@return Byte array of address to connect to, or -1 if not set.
- */
 uint8_t* NeosensoryBluefruit::getDeviceAddress(void)
 {
-	if (connect_to_any_neo_device_) return -1;
+	if (connect_to_any_neo_device_) return 0;
 	return device_address_;
 }
 
-/** @brief Start scanning for desired device
- *	@return True if able to start scan, else False
- *	@note Will automatically connect to device if it is found in scan
- */
 bool NeosensoryBluefruit::startScan(void)
 {
 	Bluefruit.Scanner.start(0);
 }
 
-/** @brief Returns true if NeosensoryBluefruit has connected to a device.
- *  @return True if NeosensoryBluefruit has connected to a device.
- */
 bool NeosensoryBluefruit::isConnected(void) {
 	return Bluefruit.Central.connected();
 }
@@ -174,9 +149,6 @@ bool NeosensoryBluefruit::checkDevice(ble_gap_evt_adv_report_t* report) {
 
 /* CLI Commands */
 
-/** @brief Returns true if connected device has authorized developer options.
- *	@return True if the connected device has authorized developer options.
- */
 bool NeosensoryBluefruit::isAuthorized(void) {
 	return is_authorized_;
 }
@@ -188,71 +160,43 @@ void NeosensoryBluefruit::sendCommand(char cmd[]) {
 	wb_write_characteristic_.write(cmd, strlen(cmd));
 }
 
-/** @brief Send a command to the wristband to authorize developer options.
- *  @note Authorization will only happen if this command is followed by 
- *  acceptTermsAndConditions().
- */
 void NeosensoryBluefruit::authorizeDeveloper(void) {
 	sendCommand("auth as developer\n");
 }
 
-/** @brief Send a command to the wristband to accept developer terms and conditions.
- */
 void NeosensoryBluefruit::acceptTermsAndConditions(void) {
 	sendCommand("accept\n");
 }
 
-/** @brief Stops the sound-to-touch algorithm that runs on the wristband.
- *  @note Stops audio and restarts the motors, which stop when audio is stopped.
- */
 void NeosensoryBluefruit::stopAlgorithm(void) {
 	audioStop();
 	motorsStart();
 }
 
-/** @brief Get information about the connected Neosensory device.
- *  @note This can be called without authorizing developer options.
- */
 void NeosensoryBluefruit::deviceInfo(void) {
 	sendCommand("device info\n");
 }
 
-/** @brief Initialize and start the motors interface. 
- *  @note The device will now respond to motor vibrate commands.
- */
 void NeosensoryBluefruit::motorsStart(void) {
 	sendCommand("motors start\n");
 }
 
-/** @brief Clears the motor queue and stops the motors interface.
- *  @note The device will no longer respond to motor vibrate commands.
- */
 void NeosensoryBluefruit::motorsStop(void) {
 	sendCommand("motors stop\n");
 }
 
-/** @brief Clears the motor command queue.
- */
 void NeosensoryBluefruit::motorsClearQueue(void) {
 	sendCommand("motors clear_queue\n");
 }
 
-/** @brief Get the amount of charge left on the device battery in percentage.
- */
 void NeosensoryBluefruit::deviceBattery(void) {
 	sendCommand("device battery_soc\n");
 }
 
-/** @brief Stars the audio task processing. 
- *  @note This will start microphone audio acquisition and pipe the audio to the current audio sink. 
- */
 void NeosensoryBluefruit::audioStart(void) {
 	sendCommand("audio start\n");
 }
 
-/** @brief Stops the current audio task processing and hence any motor outputs from the algorithm.
- *  @note This stops the actual audio acquisition from the microphone.
- */
 void NeosensoryBluefruit::audioStop(void) {
 	sendCommand("audio stop\n");
 }
@@ -289,20 +233,14 @@ void NeosensoryBluefruit::handleCliJson(String jsonMessage) {
 
 /* Hardware */
 
-/** @brief Get number of motors
- */
 uint8_t NeosensoryBluefruit::num_motors(void) {
 	return num_motors_;
 }
 
-/** @brief Get firmware frame duration in milliseconds
- */
 uint8_t NeosensoryBluefruit::firmware_frame_duration(void) {
 	return firmware_frame_duration_;
 }
 
-/** @brief Get firmware frame duration in milliseconds
- */
 uint8_t NeosensoryBluefruit::max_frames_per_bt_package(void) {
 	return max_frames_per_bt_package_;
 }
@@ -394,16 +332,6 @@ void NeosensoryBluefruit::sendMotorCommand(uint8_t motor_intensities[], size_t n
 	sendCommand("\n");
 }
 
-/** @brief Cause the wristband to vibrate at the given intensities
- *	@param[in] intensities An array of float values that denote the linear
- *	intensity values, between 0 and 1. Each index in this array corresponds
- *	to a motor. The value at that index corresponds to the intensity that motor
- *	will play at. A value of 0 is off, a value of 1 is max_vibration, and any
- *	value between is a linearly perceived value between min_vibration and
- *	max_vibration.
- *	@note This will not send a new command if the last sent array is identical
- *	to the new array of intensities.
- */
 void NeosensoryBluefruit::vibrateMotors(float intensities[]) {
 	uint8_t motor_intensities[num_motors_];
 	getMotorIntensitiesFromLinArray(intensities, motor_intensities, num_motors_);
@@ -416,17 +344,6 @@ void NeosensoryBluefruit::vibrateMotors(float intensities[]) {
 	sendMotorCommand(motor_intensities);
 }
 
-/** @brief Cause the wristband to vibrate at the given intensities, for multiple frames
- *	@param[in] intensities A nested array of float values that denote the linear
- *	intensity values, between 0 and 1. Each index in the inner arrays corresponds
- *	to a motor. The value at that index corresponds to the intensity that motor
- *	will play at. A value of 0 is off, a value of 1 is max_vibration, and any
- *	value between is a linearly perceived value between min_vibration and
- *	max_vibration. The outer indices correspond to individual frames. Each frame
- *	is played by the firmware at firmware_frame_duration intervals.
- *	@param[in] num_frames The number of frames. Cannot be more than max_frames_per_bt_package_.
- *	@note This will send all frames, even if any or all are identical to each other.
- */
 void NeosensoryBluefruit::vibrateMotors(float *intensities[], int num_frames) {
 	num_frames = min(max_frames_per_bt_package_, num_frames);
 	float flat_intensities[num_motors_ * num_frames];
@@ -443,18 +360,12 @@ void NeosensoryBluefruit::vibrateMotors(float *intensities[], int num_frames) {
 	sendMotorCommand(motor_intensities, num_frames);
 }
 
-/** @brief Turn off all the motors
- */
 void NeosensoryBluefruit::turnOffAllMotors(void) {
 	float motor_intensities[num_motors_];
 	memset(motor_intensities, 0, sizeof(float) * num_motors_);
 	vibrateMotors(motor_intensities);
 }
 
-/** @brief Turn on a single motor at an intensity
- *	@param[in] motor Index of motor to vibrate
- *	@param[in] float Intensity to vibrate motor at, between 0 and 1
- */
 void NeosensoryBluefruit::vibrateMotor(uint8_t motor, float intensity) {
 	float motor_intensities[num_motors_];
 	memset(motor_intensities, 0, sizeof(float) * num_motors_);
@@ -465,11 +376,6 @@ void NeosensoryBluefruit::vibrateMotor(uint8_t motor, float intensity) {
 
 /* Callbacks */
 
-/** @brief Callback when a device is found during scan
- *	@note This is set to automatically connect to a found
- *	device if its address matches our desired device address.
- *	Otherwise, the scanner resumes scanning.
- */
 void NeosensoryBluefruit::scanCallback(ble_gap_evt_adv_report_t* report)
 {
 	if (checkDevice(report)) {
@@ -479,13 +385,6 @@ void NeosensoryBluefruit::scanCallback(ble_gap_evt_adv_report_t* report)
 	}
 }
 
-/** @brief Callback when central connects
- *	@param conn_handle Connection Handle that central connected to
- *	@note Checks that wristband services and characteristics are present,
- *	enables notification callbacks from read characteristic, 
- *	and pairs to connected wristband. If not, disconnects.
- *	Also calls externalConnectedCallback.
- */
 void NeosensoryBluefruit::connectCallback(uint16_t conn_handle)
 {
 	bool success = true;
@@ -505,44 +404,28 @@ void NeosensoryBluefruit::connectCallback(uint16_t conn_handle)
 	}
 }
 
-/** @brief Callback when central disconnects
- */
 void NeosensoryBluefruit::disconnectCallback(
 	uint16_t conn_handle, uint8_t reason) {
 	is_authorized_ = false;
 	externalDisconnectedCallback(conn_handle, reason);
 }
 
-/** @brief Callback when read characteristic has data to be read
- */
 void NeosensoryBluefruit::readNotifyCallback(
 	BLEClientCharacteristic* chr, uint8_t* data, uint16_t len) {
 	parseCliData(data, len);
 	externalReadNotifyCallback(chr, data, len);
 }
 
-/** @brief Sets a callback that gets called when NeoBluefruit connects to a device
- *	@param[in] connectedCallback The function to call. Takes a bool argument, which
- *	will be true if connection resulted in successfully finding all services and
- *	characteristics, else false.
- */
 void NeosensoryBluefruit::setConnectedCallback(
 	ConnectedCallback connectedCallback) {
 	externalConnectedCallback = connectedCallback;
 }
 
-/** @brief Sets a callback that gets called 
- *	when NeoBluefruit disconnects from a device
- *	@param[in] disconnectedCallback The function to call.
- */
 void NeosensoryBluefruit::setDisconnectedCallback(
 	DisconnectedCallback disconnectedCallback) {
 	externalDisconnectedCallback = disconnectedCallback;
 }
 
-/** @brief Sets a callback that gets called when read characteristic has data
- *	@param[in] readNotifyCallback The function to call.
- */
 void NeosensoryBluefruit::setReadNotifyCallback(
 	ReadNotifyCallback readNotifyCallback) {
 	externalReadNotifyCallback = readNotifyCallback;
