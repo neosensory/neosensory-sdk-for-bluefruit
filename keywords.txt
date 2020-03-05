@@ -13,8 +13,16 @@ isConnected	KEYWORD2
 isAuthenticated	KEYWORD2
 sendCommand	KEYWORD2
 stopAlgorithm	KEYWORD2
-authenticateWristband	KEYWORD2
+authorizeDeveloper	KEYWORD2
 acceptTermsAndConditions	KEYWORD2
+deviceInfo	KEYWORD2
+motorsStart	KEYWORD2
+motorsStop	KEYWORD2
+motorsClearQueue	KEYWORD2
+deviceBattery	KEYWORD2
+audioStart	KEYWORD2
+audioStop	KEYWORD2
+stopAlgorithm	KEYWORD2
 setConnectedCallback	KEYWORD2
 setDisconnectedCallback	KEYWORD2
 setReadNotifyCallback	KEYWORD2

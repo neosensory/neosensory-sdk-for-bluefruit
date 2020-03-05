@@ -27,8 +27,15 @@ class NeosensoryBluefruit
     bool isConnected(void);
     bool isAuthenticated(void);
     void sendCommand(char cmd[]);
+    void deviceInfo(void);
+    void motorsStart(void);
+    void motorsStop(void);
+    void motorsClearQueue(void);
+    void deviceBattery(void);
+    void audioStart(void);
+    void audioStop(void);
     void stopAlgorithm(void);
-    void authenticateWristband(void);
+    void authorizeDeveloper(void);
     void acceptTermsAndConditions(void);
     void setConnectedCallback(ConnectedCallback);
     void setDisconnectedCallback(DisconnectedCallback);

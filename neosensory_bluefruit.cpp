@@ -130,24 +130,72 @@ void NeosensoryBluefruit::sendCommand(char cmd[]) {
 	wb_write_characteristic_.write(cmd, strlen(cmd));
 }
 
-/** @brief Send a command to the wristband to authenticate developer options
+/** @brief Send a command to the wristband to authorize developer options.
+ *  @note Authorization will only happen if this command is followed by 
+ *  acceptTermsAndConditions().
  */
-void NeosensoryBluefruit::authenticateWristband(void) {
+void NeosensoryBluefruit::authorizeDeveloper(void) {
 	sendCommand("auth as developer\n");
 }
 
-/** @brief Send a command to the wristband to accept developer terms and conditions
+/** @brief Send a command to the wristband to accept developer terms and conditions.
  */
 void NeosensoryBluefruit::acceptTermsAndConditions(void) {
 	sendCommand("accept\n");
 }
 
-/** @brief Send a command to the wristband to turn off algorithm
- *	@note Also sends motors start command since algo stop command
- *	stops motors.
+/** @brief Stops the audio without stopping the motors.
  */
 void NeosensoryBluefruit::stopAlgorithm(void) {
-	sendCommand("audio stop\nmotors start\n");
+	audioStop();
+	motorsStart();
+}
+
+/** @brief Get information about the connected Neosensory device.
+ *  @note This can be called without authenticating 
+ */
+void NeosensoryBluefruit::deviceInfo(void) {
+	sendCommand("device info\n");
+}
+
+/** @brief Initialize and start the motors interface. 
+ *  @note The device will now respond to motor vibrate commands.
+ */
+void NeosensoryBluefruit::motorsStart(void) {
+	sendCommand("motors start\n");
+}
+
+/** @brief Clears the motor queue and stops the motors interface.
+ *  @note The device will no longer respond to motor vibrate commands.
+ */
+void NeosensoryBluefruit::motorsStop(void) {
+	sendCommand("motors stop\n");
+}
+
+/** @brief Clears the motor command queue.
+ */
+void NeosensoryBluefruit::motorsClearQueue(void) {
+	sendCommand("motors clear_queue\n");
+}
+
+/** @brief Get the amount of charge left on the device battery in percentage.
+ */
+void NeosensoryBluefruit::deviceBattery(void) {
+	sendCommand("device battery_soc\n");
+}
+
+/** @brief Stars the audio task processing. 
+ *  @note This will start microphone audio acquisition and pipe the audio to the current audio sink. 
+ */
+void NeosensoryBluefruit::audioStart(void) {
+	sendCommand("audio start\n");
+}
+
+/** @brief Stops the current audio task processing and hence any motor outputs from the algorithm.
+ *  @note This stops the actual audio acquisition from the microphone.
+ */
+void NeosensoryBluefruit::audioStop(void) {
+	sendCommand("audio stop\n");
 }
 
 /** @brief Get number of motors

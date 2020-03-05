@@ -24,6 +24,9 @@ void setup() {
   NeoBluefruit.setReadNotifyCallback(onReadNotify);
   NeoBluefruit.startScan();
   set_rumble_frames();
+  while(!NeoBluefruit.isConnected() || !NeoBluefruit.isAuthenticated()) {}
+  NeoBluefruit.deviceInfo();
+  NeoBluefruit.deviceBattery();
 }
 
 void loop() {
@@ -69,9 +72,9 @@ void onConnected(bool success) {
   Serial.println("Connected!");
 
   // Once we are successfully connected to the wristband,
-  // send developer authentication command and commands
+  // send developer autherization command and commands
   // to stop sound-to-touch algorithm.
-  NeoBluefruit.authenticateWristband();
+  NeoBluefruit.authorizeDeveloper();
   NeoBluefruit.acceptTermsAndConditions();
   NeoBluefruit.stopAlgorithm();
 }
