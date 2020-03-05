@@ -6,9 +6,9 @@
 
 #include "Arduino.h"
 #include "neosensory_bluefruit.h"
+#include <Base64.h>
 #include <bluefruit.h>
 #include <stdlib.h>
-#include <Base64.h>
 
 /** @brief Constructor for new NeosensoryBluefruit object
  *	@param[in] device_id The device_id of the hardware to connect to
