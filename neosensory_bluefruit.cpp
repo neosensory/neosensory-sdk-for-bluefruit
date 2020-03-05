@@ -136,11 +136,6 @@ void NeosensoryBluefruit::authenticateWristband(void) {
  */
 void NeosensoryBluefruit::acceptTermsAndConditions(void) {
 	sendCommand("accept\n");
-
-	// TODO: Wait for successful authentication response
-	// rather than assuming success
-	delay(500);
-	is_authenticated_ = true;
 }
 
 /** @brief Send a command to the wristband to turn off algorithm
@@ -391,7 +386,34 @@ void NeosensoryBluefruit::disconnectCallback(
  */
 void NeosensoryBluefruit::readNotifyCallback(
 	BLEClientCharacteristic* chr, uint8_t* data, uint16_t len) {
+	parseCliData(data, len);
 	externalReadNotifyCallback(chr, data, len);
+}
+
+/** @brief Looks for a JSON object in the input data, or in a combination of this data and previous data.
+ */
+void NeosensoryBluefruit::parseCliData(uint8_t* data, uint16_t len) {
+	for (int i = 0; i < len; i++) {
+		if (data[i] == '{') {
+			jsonStarted_ = true;
+			jsonMessage_ = "";
+		}
+		if (jsonStarted_) {
+			jsonMessage_ += (char)data[i];
+		}
+		if (data[i] == '}') {
+			jsonStarted_ = false;
+			handleCliJson(jsonMessage_);
+		}
+	}
+}
+
+/** @brief Handles CLI JSON responses, by granting authentication for instance.
+ */
+void NeosensoryBluefruit::handleCliJson(String jsonMessage) {
+	if (jsonMessage.indexOf('Developer API access granted!') != -1) {
+		is_authenticated_ = true;
+	}
 }
 
 /** @brief Sets a callback that gets called when NeoBluefruit connects to a device

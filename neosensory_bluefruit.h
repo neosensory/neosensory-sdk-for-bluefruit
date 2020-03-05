@@ -7,6 +7,7 @@
 #define NeosensoryBluefruit_h
 
 #include "Arduino.h"
+#include <ArduinoJson.h>
 #include <bluefruit.h>
 
 class NeosensoryBluefruit
@@ -65,6 +66,12 @@ class NeosensoryBluefruit
     void getMotorIntensitiesFromLinArray(
         float lin_array[], uint8_t motor_space_array[], size_t array_size);
     void sendMotorCommand(uint8_t motor_intensities[], size_t num_frames=1);
+
+    /* CLI Parsing */
+    void parseCliData(uint8_t* data, uint16_t len);
+    void handleCliJson(String jsonMessage);
+    String jsonMessage_;
+    bool jsonStarted_;
 
     /* External Callbacks */
     ConnectedCallback externalConnectedCallback;
