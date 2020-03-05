@@ -47,6 +47,9 @@ NeosensoryBluefruit::NeosensoryBluefruit(char device_id[], uint8_t num_motors,
 	is_authenticated_ = false;
 }
 
+
+/* Bluetooth */
+
 /* @brief Begins Bluetooth components of NeosensoryBluefruit.
  */
 void NeosensoryBluefruit::begin(void) {
@@ -120,6 +123,49 @@ bool NeosensoryBluefruit::startScan(void)
 bool NeosensoryBluefruit::isConnected(void) {
 	return Bluefruit.Central.connected();
 }
+
+/** @brief Checks that a report address, found during a scan,
+ * matches the address of the device we are searching for.
+ * @param[in] foundAddress The address found during the scan.
+ * @note Address will be reversed order from band name array.
+ */
+bool NeosensoryBluefruit::checkAddressMatches(uint8_t foundAddress[]) {
+	for (int i = 0; i < BLE_GAP_ADDR_LEN; i++) {
+		if (device_address_[i] != 
+			foundAddress[BLE_GAP_ADDR_LEN - (i + 1)]) {
+			return false;
+		}
+	}
+	return true;
+}
+
+/** @brief Checks if the found BLE report belongs to a Neosensory device
+ *  @param[in] report The found report
+ *  @note For now, we are just checking that the string "Buzz" is in the 
+ *  advertising data.
+ */
+bool NeosensoryBluefruit::checkIsNeosensory(ble_gap_evt_adv_report_t* report) {
+	String advertising_data = "";
+	for (int i = 7; i < report->data.len; i++) {
+		advertising_data += (char)report->data.p_data[i];
+	}
+	bool found = advertising_data.indexOf("Buzz") != -1;
+	return found;
+}
+
+/** @brief Checks if we should connect to the found BLE report.
+ *  @param[in] report The found report
+ */
+bool NeosensoryBluefruit::checkDevice(ble_gap_evt_adv_report_t* report) {
+	if (connect_to_any_neo_device_) {
+		return checkIsNeosensory(report);
+	} else {
+		return checkAddressMatches(report->peer_addr.addr);
+	}
+}
+
+
+/* CLI Commands */
 
 bool NeosensoryBluefruit::isAuthenticated(void) {
 	return is_authenticated_;
@@ -200,6 +246,35 @@ void NeosensoryBluefruit::audioStop(void) {
 	sendCommand("audio stop\n");
 }
 
+/** @brief Looks for a JSON object in the input data, or in a combination of this data and previous data.
+ */
+void NeosensoryBluefruit::parseCliData(uint8_t* data, uint16_t len) {
+	for (int i = 0; i < len; i++) {
+		if (data[i] == '{') {
+			jsonStarted_ = true;
+			jsonMessage_ = "";
+		}
+		if (jsonStarted_) {
+			jsonMessage_ += (char)data[i];
+		}
+		if (data[i] == '}') {
+			jsonStarted_ = false;
+			handleCliJson(jsonMessage_);
+		}
+	}
+}
+
+/** @brief Handles CLI JSON responses, by granting authentication for instance.
+ */
+void NeosensoryBluefruit::handleCliJson(String jsonMessage) {
+	if (jsonMessage.indexOf('Developer API access granted!') != -1) {
+		is_authenticated_ = true;
+	}
+}
+
+
+/* Hardware */
+
 /** @brief Get number of motors
  */
 uint8_t NeosensoryBluefruit::num_motors(void) {
@@ -217,6 +292,9 @@ uint8_t NeosensoryBluefruit::firmware_frame_duration(void) {
 uint8_t NeosensoryBluefruit::max_frames_per_bt_package(void) {
 	return max_frames_per_bt_package_;
 }
+
+
+/* Motor Control */
 
 /** @brief Translates a linear intensity value into a 
  *	linearly perceived motor intensity value
@@ -373,46 +451,6 @@ void NeosensoryBluefruit::vibrateMotor(uint8_t motor, float intensity) {
 
 /* Callbacks */
 
-/** @brief Checks that a report address, found during a scan,
- * matches the address of the device we are searching for.
- * @param[in] foundAddress The address found during the scan.
- * @note Address will be reversed order from band name array.
- */
-bool NeosensoryBluefruit::checkAddressMatches(uint8_t foundAddress[]) {
-	for (int i = 0; i < BLE_GAP_ADDR_LEN; i++) {
-		if (device_address_[i] != 
-			foundAddress[BLE_GAP_ADDR_LEN - (i + 1)]) {
-			return false;
-		}
-	}
-	return true;
-}
-
-/** @brief Checks if the found BLE report belongs to a Neosensory device
- *  @param[in] report The found report
- *  @note For now, we are just checking that the string "Buzz" is in the 
- *  advertising data.
- */
-bool NeosensoryBluefruit::checkIsNeosensory(ble_gap_evt_adv_report_t* report) {
-	String advertising_data = "";
-	for (int i = 7; i < report->data.len; i++) {
-		advertising_data += (char)report->data.p_data[i];
-	}
-	bool found = advertising_data.indexOf("Buzz") != -1;
-	return found;
-}
-
-/** @brief Checks if we should connect to the found BLE report.
- *  @param[in] report The found report
- */
-bool NeosensoryBluefruit::checkDevice(ble_gap_evt_adv_report_t* report) {
-	if (connect_to_any_neo_device_) {
-		return checkIsNeosensory(report);
-	} else {
-		return checkAddressMatches(report->peer_addr.addr);
-	}
-}
-
 /** @brief Callback when a device is found during scan
  *	@note This is set to automatically connect to a found
  *	device if its address matches our desired device address.
@@ -467,32 +505,6 @@ void NeosensoryBluefruit::readNotifyCallback(
 	BLEClientCharacteristic* chr, uint8_t* data, uint16_t len) {
 	parseCliData(data, len);
 	externalReadNotifyCallback(chr, data, len);
-}
-
-/** @brief Looks for a JSON object in the input data, or in a combination of this data and previous data.
- */
-void NeosensoryBluefruit::parseCliData(uint8_t* data, uint16_t len) {
-	for (int i = 0; i < len; i++) {
-		if (data[i] == '{') {
-			jsonStarted_ = true;
-			jsonMessage_ = "";
-		}
-		if (jsonStarted_) {
-			jsonMessage_ += (char)data[i];
-		}
-		if (data[i] == '}') {
-			jsonStarted_ = false;
-			handleCliJson(jsonMessage_);
-		}
-	}
-}
-
-/** @brief Handles CLI JSON responses, by granting authentication for instance.
- */
-void NeosensoryBluefruit::handleCliJson(String jsonMessage) {
-	if (jsonMessage.indexOf('Developer API access granted!') != -1) {
-		is_authenticated_ = true;
-	}
 }
 
 /** @brief Sets a callback that gets called when NeoBluefruit connects to a device
