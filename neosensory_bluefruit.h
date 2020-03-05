@@ -10,6 +10,19 @@
  * It heavily relies on Adafruit's Bluefruit library for BLE. 
  * It also opens all developer accessible CLI commands with the Neosensory hardware. 
  * It also offers some higher level motor vibration functions.
+ * 
+ * @section dependencies Dependencies
+ * 
+ * This library depends on <a href="https://github.com/adafruit/Adafruit_nRF52_Arduino/tree/master/libraries/Bluefruit52Lib">
+ * Adafruit's Bluefruit library</a> and on <a href="https://github.com/adamvr/arduino-base64">adamvr's base64 library</a>.
+ * 
+ * @section hardware Hardware
+ * 
+ * This library connects any Neosensory hardware (currently just Buzz) to a microcontroller with
+ * an nRF52 BLE chip. At this point, it has only been tested with the <a href="https://www.adafruit.com/product/3406">
+ * Adafruit Feather nRF52</a> but should work with any of 
+ * <a href="https://github.com/adafruit/Adafruit_nRF52_Arduino#arduino-core-for-adafruit-bluefruit-nrf52-boards">
+ * Adafruit's Bluefruit nRF52 boards</a>.
  *
  * @section author Author
  *
@@ -17,6 +30,7 @@
  *
  * @section license License
  *
+ * Coming soon. Currently not licensed for use.
  *
  */
 
