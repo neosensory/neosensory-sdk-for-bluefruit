@@ -80,7 +80,7 @@ void onConnected(bool success) {
 }
 
 void onDisconnected(uint16_t conn_handle, uint8_t reason) {
-  Serial.println("Disconnected");
+  Serial.println("\nDisconnected");
 }
 
 void onReadNotify(BLEClientCharacteristic* chr, uint8_t* data, uint16_t len) {
