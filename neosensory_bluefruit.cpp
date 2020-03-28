@@ -12,6 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Please note that while this Neosensory SDK has an Apache 2.0 license, 
+// usage of the Neosensory API to interface with Neosensory products is 
+// still  subject to the Neosensory developer terms of service located at:
+// https://neosensory.com/legal/dev-terms-service/
+
 /*
 	NeosensoryBluefruit.cpp - Library for connecting to 
 	Neosensory hardware via Adafruit's Bluefruit library.

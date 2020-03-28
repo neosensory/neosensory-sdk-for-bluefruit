@@ -12,6 +12,11 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * Please note that while this Neosensory SDK has an Apache 2.0 license, 
+ * usage of the Neosensory API to interface with Neosensory products is 
+ * still  subject to the Neosensory developer terms of service located at:
+ * https://neosensory.com/legal/dev-terms-service/
  */
 
 /*!
