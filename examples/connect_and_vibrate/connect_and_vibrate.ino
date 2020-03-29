@@ -4,13 +4,24 @@
   Buzz and an Adafruit Feather board (or other board
   that works with Adafruit's Bluefruit library).
 
+  After supplying your device ID (see below) and 
+  successfully uploading the firmware, put your Buzz
+  into pairing mode by holding the (+) and (-) buttons
+  simultaneously until the blue LEDs flash, which will
+  then enable the Bluefruit device to connect and begin
+  controlling the Buzz.
+
   Created by Mike V. Perrotta, January 23, 2020.
 */
 
 #include <neosensory_bluefruit.h>
 
-NeosensoryBluefruit NeoBluefruit;
-// NeosensoryBluefruit NeoBluefruit("F2 AD 50 EA 96 31");
+/* 
+ * Supply your device ID. For Neosensory Buzz, 
+ * you can obtain this by connected over USB (9600 Baud) 
+ * and running the command "device info"
+ */
+NeosensoryBluefruit NeoBluefruit("F2 AD 50 EA 96 31");
 
 int motor = 0;
 float intensity = 0;

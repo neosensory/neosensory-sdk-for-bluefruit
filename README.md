@@ -8,7 +8,7 @@ Download the latest zip file from the [releases](https://github.com/neosensory/N
 
 ## Dependencies
 
-This library depends on [Adafruit's Bluefruit library](https://github.com/adafruit/Adafruit_nRF52_Arduino/tree/master/libraries/Bluefruit52Lib) and on [adamvr's base64 library](https://github.com/adamvr/arduino-base64).
+This library depends on Adafruit's Bluefruit library, included in the [Adafruit Board Support Package (BSP) for nRF52 Boards](https://github.com/adafruit/Adafruit_nRF52_Arduino) (make sure to go through the install instructions thoroughly and update your bootloader) and on [adamvr's base64 library](https://github.com/adamvr/arduino-base64).
 
 ## Hardware
 
@@ -20,4 +20,4 @@ See library documentation at https://neosensory.github.io/NeosensoryBluefruit/. 
 
 ## Examples
 
-See the [`connect_and_vibrate.ino`](examples/connect_and_vibrate) example.
+See the [`connect_and_vibrate.ino`](examples/connect_and_vibrate) example. For use with a Neosensory Buzz, you will need to supply your device ID, which can be obtained by connecting to your Buzz over USB over a serial terminal application (baud: 9600) and running the command `device info`. After successfully uploading the example code with the correct device ID, into pairing mode by holding the (+) and (-) buttons simultaneously until the blue LEDs flash, which will then enable the Bluefruit device to connect and begin controlling the Buzz.
