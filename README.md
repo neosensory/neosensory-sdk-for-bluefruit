@@ -1,6 +1,6 @@
 # Neosensory Bluefruit Library
 
-A library for Arduino projects that allows connecting an Adafruit Bluefruit compatible board to connect via BLE and communicate to a Neosensory Buzz. Please note that while the project is licensed under Apache 2.0, usage of the Neosensory API to interface with Neosensory products is still subject to the [Neosensory Developer API License Agreement](https://neosensory.com/legal/dev-terms-service/).
+A library for Arduino projects that allows connecting an Adafruit Bluefruit compatible board to connect via BLE and communicate to a Neosensory Buzz. Please note that while the project is licensed as Apache 2.0, usage of the Neosensory API to interface with Neosensory products is still subject to the [Neosensory Developer API License Agreement](https://neosensory.com/legal/dev-terms-service/).
 
 ## Installation
 
