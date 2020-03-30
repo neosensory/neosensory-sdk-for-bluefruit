@@ -19,15 +19,10 @@ env:
      - PRETTYNAME="Neosensory SDK for Adafruit Bluefruit"
 
 before_install:
-   - source <(curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/install.sh)
    - curl -SLs https://raw.githubusercontent.com/adafruit/travis-ci-arduino/master/run-clang-format.py > run-clang-format.py
-
-install:
-   - arduino --install-library "Adafruit BluefruitLE nRF52","base64"
 
 script:
    - python run-clang-format.py -r .
-   - build_main_platforms
 
 # Generate and deploy documentation
 after_success:
