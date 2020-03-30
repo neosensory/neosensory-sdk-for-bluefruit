@@ -4,7 +4,7 @@
   Buzz and an Adafruit Feather board (or other board
   that works with Adafruit's Bluefruit library).
 
-  If you have trouble connecting, you can try to put 
+  If you have trouble connecting, you can try putting 
   your Buzz into pairing mode by holding the (+) and (-) 
   buttons simultaneously until the blue LEDs flash.
 
