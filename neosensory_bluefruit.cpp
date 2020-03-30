@@ -84,7 +84,7 @@ void NeosensoryBluefruit::setDeviceAddress(char device_id[])
 }
 
 void NeosensoryBluefruit::setDeviceId(char new_device_id[]) {
-	connect_to_any_neo_device_ = sizeof(new_device_id) <= 0;
+	connect_to_any_neo_device_ = strlen(new_device_id) <= 0;
 	if (!connect_to_any_neo_device_) {
 		setDeviceAddress(new_device_id);
 	}
