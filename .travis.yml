@@ -1,17 +1,8 @@
 language: c
 sudo: false
-cache:
-  directories:
-    - ~/arduino_ide
-    - ~/.arduino15/packages/
 git:
   depth: false
   quiet: true
-addons:
-  apt:
-    sources:
-      - llvm-toolchain-trusty-5.0
-      - key_url: 'http://apt.llvm.org/llvm-snapshot.gpg.key'
 env:
   global:
      - PRETTYNAME="Neosensory SDK for Adafruit Bluefruit"
