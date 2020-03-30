@@ -1,6 +1,6 @@
 # Neosensory Bluefruit Library
 
-A library for Arduino projects that allows connecting an Adafruit Bluefruit compatible board to connect via BLE and communicate to a Neosensory Buzz. 
+A library for Arduino projects that allows connecting an Adafruit Bluefruit compatible board to connect via BLE and communicate to a Neosensory Buzz. Please note that while the project is licensed under Apache 2.0, usage of the Neosensory API to interface with Neosensory products is still subject to the [Neosensory Developer API License Agreement](https://neosensory.com/legal/dev-terms-service/).
 
 ## Installation
 
@@ -8,7 +8,7 @@ Download the latest zip file from the [releases](https://github.com/neosensory/N
 
 ## Dependencies
 
-This library depends on [Adafruit's Bluefruit library](https://github.com/adafruit/Adafruit_nRF52_Arduino/tree/master/libraries/Bluefruit52Lib) and on [adamvr's base64 library](https://github.com/adamvr/arduino-base64).
+This library depends on Adafruit's Bluefruit library, included in the [Adafruit Board Support Package (BSP) for nRF52 Boards](https://github.com/adafruit/Adafruit_nRF52_Arduino#bsp-installation) (make sure to go through the install instructions thoroughly and update your bootloader) and on [adamvr's base64 library](https://github.com/adamvr/arduino-base64).
 
 ## Hardware
 
@@ -16,7 +16,7 @@ This library connects any Neosensory hardware (currently just Buzz) to a microco
 
 ## Documentation
 
-See library documentation at https://neosensory.github.io/NeosensoryBluefruit/. _(Documentation will be published when this repo becomes public. For now, see documentation by downloading `gh-pages` branch and opening `index.html`.)_
+See library documentation at https://neosensory.github.io/NeosensoryBluefruit/.
 
 ## Examples
 

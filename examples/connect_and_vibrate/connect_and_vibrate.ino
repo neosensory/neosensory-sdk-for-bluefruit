@@ -22,11 +22,23 @@
  * NeosensoryBluefruit library. Requires a Neosensory
  * Buzz and an Adafruit Feather board (or other board
  * that works with Adafruit's Bluefruit library).
+ * 
+ * If you have trouble connecting, you can try putting 
+ * your Buzz into pairing mode by holding the (+) and (-) 
+ * buttons simultaneously until the blue LEDs flash.
+ *
  * Created by Mike V. Perrotta, January 23, 2020.
+ *
 */
 
 #include <neosensory_bluefruit.h>
 
+/* 
+ * If there are multiple Buzz devices in proximity, 
+ * you can supply a Device ID for a specific Buzz.
+ * You can obtain this by connecting over USB (9600 Baud) 
+ * and running the command "device info"
+ */
 NeosensoryBluefruit NeoBluefruit;
 // NeosensoryBluefruit NeoBluefruit("F2 AD 50 EA 96 31");
 
