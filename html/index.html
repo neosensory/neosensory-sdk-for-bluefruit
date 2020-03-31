@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>Adafruit Library: Neosensory Bluefruit BLE helper.</title>
+<title>Neosensory SDK for Bluefruit: Neosensory SDK for Adafruit Bluefruit</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Adafruit Library
+   <div id="projectname">Neosensory SDK for Bluefruit
    </div>
   </td>
  </tr>
@@ -38,7 +38,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li class="current"><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -75,24 +74,25 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div class="header">
   <div class="headertitle">
-<div class="title">Neosensory Bluefruit BLE helper. </div>  </div>
+<div class="title">Neosensory SDK for Adafruit Bluefruit </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="intro_sec"></a>
-Introduction</h1>
-<p>This is the documentation for Neosensory's <a class="el" href="class_neosensory_bluefruit.html" title="Class that handles connecting to and communicating with a Neosensory device over BLE. Relies heavily on Adafruit&#39;s Bluefruit library for BLE. Opens all developer accessible CLI commands with Neosensory hardware. Also offers some higher level motor vibration functions. ">NeosensoryBluefruit</a> library, which handles connecting to and communicating with a Neosensory device over BLE. It heavily relies on Adafruit's Bluefruit library for BLE. It also opens all developer accessible CLI commands with the Neosensory hardware. It also offers some higher level motor vibration functions.</p>
-<h1><a class="anchor" id="dependencies"></a>
-Dependencies</h1>
-<p>This library depends on <a href="https://github.com/adafruit/Adafruit_nRF52_Arduino/tree/master/libraries/Bluefruit52Lib">Adafruit's Bluefruit library</a> and on <a href="https://github.com/adamvr/arduino-base64">adamvr's base64 library</a>.</p>
-<h1><a class="anchor" id="hardware"></a>
-Hardware</h1>
+<div class="textblock"><p>An Arduino library that allows BLE communication to a Neosensory Buzz wristband via an Adafruit Bluefruit compatible board. This SDK is centered around the NeosensoryBluefruit class.</p>
+<h2>Installation</h2>
+<p>Download the latest zip file from the <a href="https://github.com/neosensory/NeosensoryBluefruit/releases">releases page</a> and add it to Arduino following these <a href="https://www.arduino.cc/en/guide/libraries#toc4">instructions for adding zip file libraries to Arduino</a>.</p>
+<h2>Dependencies</h2>
+<p>This library depends on Adafruit's Bluefruit library, included in the <a href="https://github.com/adafruit/Adafruit_nRF52_Arduino#bsp-installation">Adafruit Board Support Package (BSP) for nRF52 Boards</a> (make sure to go through the install instructions thoroughly and update your bootloader) and on <a href="https://github.com/adamvr/arduino-base64">adamvr's base64 library</a>.</p>
+<h2>Hardware</h2>
 <p>This library connects any Neosensory hardware (currently just Buzz) to a microcontroller with an nRF52 BLE chip. At this point, it has only been tested with the <a href="https://www.adafruit.com/product/3406">Adafruit Feather nRF52</a> but should work with any of <a href="https://github.com/adafruit/Adafruit_nRF52_Arduino#arduino-core-for-adafruit-bluefruit-nrf52-boards">Adafruit's Bluefruit nRF52 boards</a>.</p>
-<h1><a class="anchor" id="author"></a>
-Author</h1>
-<p>Written by Mike Perrotta for Neosensory, Inc.</p>
-<h1><a class="anchor" id="license"></a>
-License</h1>
-<p>Coming soon. Currently not licensed for use. </p>
+<h2>Documentation</h2>
+<p>See library documentation at <a href="https://neosensory.github.io/NeosensoryBluefruit">https://neosensory.github.io/NeosensoryBluefruit</a>. See GitHub repo at <a href="https://github.com/neosensory/neosensory-sdk-for-bluefruit">https://github.com/neosensory/neosensory-sdk-for-bluefruit</a>.</p>
+<h2>Examples</h2>
+<p>See the <a href="https://github.com/neosensory/neosensory-sdk-for-bluefruit/blob/master/examples/connect_and_vibrate/connect_and_vibrate.ino"><code>connect_and_vibrate.ino</code></a> example.</p>
+<h2>License</h2>
+<p>Please note that while this Neosensory SDK has an Apache 2.0 license, usage of the Neosensory API to interface with Neosensory products is still subject to the Neosensory developer terms of service located at: <a href="https://neosensory.com/legal/dev-terms-service">https://neosensory.com/legal/dev-terms-service</a>.</p>
+<p>See <a href="https://github.com/neosensory/neosensory-sdk-for-bluefruit/blob/master/LICENSE">LICENSE</a>.</p>
+<h2>Author</h2>
+<p>Originally created by Mike Perrotta for Neosensory, Inc. </p>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
