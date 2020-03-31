@@ -1,38 +1,8 @@
-/*!
- * @file neosensory_bluefruit.h
- *
- * @mainpage Neosensory Bluefruit BLE helper.
- *
- * @section intro_sec Introduction
- *
- * This is the documentation for Neosensory's NeosensoryBluefruit library,
- * which handles connecting to and communicating with a Neosensory device over BLE. 
- * It heavily relies on Adafruit's Bluefruit library for BLE. 
- * It also opens all developer accessible CLI commands with the Neosensory hardware. 
- * It also offers some higher level motor vibration functions.
- * 
- * @section dependencies Dependencies
- * 
- * This library depends on <a href="https://github.com/adafruit/Adafruit_nRF52_Arduino/tree/master/libraries/Bluefruit52Lib">
- * Adafruit's Bluefruit library</a> and on <a href="https://github.com/adamvr/arduino-base64">adamvr's base64 library</a>.
- * 
- * @section hardware Hardware
- * 
- * This library connects any Neosensory hardware (currently just Buzz) to a microcontroller with
- * an nRF52 BLE chip. At this point, it has only been tested with the <a href="https://www.adafruit.com/product/3406">
- * Adafruit Feather nRF52</a> but should work with any of 
- * <a href="https://github.com/adafruit/Adafruit_nRF52_Arduino#arduino-core-for-adafruit-bluefruit-nrf52-boards">
- * Adafruit's Bluefruit nRF52 boards</a>.
- *
- * @section author Author
- *
- * Written by Mike Perrotta for Neosensory, Inc.
- *
- * @section license License
- *
- * Coming soon. Currently not licensed for use.
- *
- */
+/*
+    NeosensoryBluefruit.h - Library for connecting to 
+    Neosensory hardware via Adafruit's Bluefruit library.
+    Created by Mike V. Perrotta, January 23, 2020.
+*/
 
 #ifndef NeosensoryBluefruit_h
 #define NeosensoryBluefruit_h
@@ -191,8 +161,7 @@ class NeosensoryBluefruit
      */
     void setConnectedCallback(ConnectedCallback);
 
-    /** @brief Sets a callback that gets called.
-     *  when NeoBluefruit disconnects from a device
+    /** @brief Sets a callback that gets called when NeoBluefruit disconnects from a device
      *  @param[in] disconnectedCallback The function to call.
      */
     void setDisconnectedCallback(DisconnectedCallback);

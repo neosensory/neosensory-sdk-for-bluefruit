@@ -1,10 +1,10 @@
-# Neosensory Bluefruit Library
+# Neosensory SDK for Adafruit Bluefruit
 
-A library for Arduino projects that allows connecting an Adafruit Bluefruit compatible board to connect via BLE and communicate to a Neosensory Buzz. 
+An Arduino library that allows BLE communication to a Neosensory Buzz wristband via an Adafruit Bluefruit compatible board.
 
 ## Installation
 
-Download the latest zip file from the [releases](https://github.com/neosensory/NeosensoryBluefruit/releases) page and add it to Arduino ([instructions](https://www.arduino.cc/en/guide/libraries#toc4)).
+Download the latest zip file from the [releases page](https://github.com/neosensory/NeosensoryBluefruit/releases) and add it to Arduino following these [instructions for adding zip file libraries to Arduino](https://www.arduino.cc/en/guide/libraries#toc4).
 
 ## Dependencies
 
@@ -16,8 +16,21 @@ This library connects any Neosensory hardware (currently just Buzz) to a microco
 
 ## Documentation
 
-See library documentation at https://neosensory.github.io/NeosensoryBluefruit/. _(Documentation will be published when this repo becomes public. For now, see documentation by downloading `gh-pages` branch and opening `index.html`.)_
+See library documentation at https://neosensory.github.io/NeosensoryBluefruit. See GitHub repo at https://github.com/neosensory/neosensory-sdk-for-bluefruit.
 
 ## Examples
 
-See the [`connect_and_vibrate.ino`](examples/connect_and_vibrate) example.
+See the [`connect_and_vibrate.ino`](https://github.com/neosensory/neosensory-sdk-for-bluefruit/blob/master/examples/connect_and_vibrate/connect_and_vibrate.ino) example.
+
+## License
+
+Please note that while this Neosensory SDK has an Apache 2.0 license, 
+usage of the Neosensory API to interface with Neosensory products is 
+still  subject to the Neosensory developer terms of service located at:
+https://neosensory.com/legal/dev-terms-service.
+
+See [LICENSE](https://github.com/neosensory/neosensory-sdk-for-bluefruit/blob/master/LICENSE).
+
+## Author
+
+Originally created by Mike Perrotta for Neosensory, Inc.
