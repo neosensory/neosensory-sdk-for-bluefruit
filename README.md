@@ -1,6 +1,6 @@
 # Neosensory SDK for Adafruit Bluefruit
 
-An Arduino library that allows BLE communication to a Neosensory Buzz wristband via an Adafruit Bluefruit compatible board.
+An Arduino library that allows BLE communication to a Neosensory Buzz wristband via an Adafruit Bluefruit compatible board. This SDK is centered around the NeosensoryBluefruit class. 
 
 ## Installation
 
