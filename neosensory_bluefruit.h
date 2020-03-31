@@ -72,8 +72,8 @@ class NeosensoryBluefruit
      */
     void acceptTermsAndConditions(void);
 
-    /** @brief Stars the audio task processing. 
      *  @note This will start microphone audio acquisition and pipe the audio to the current audio sink. 
+    /** @brief Starts the audio task processing. 
      */
     void audioStart(void);
 
