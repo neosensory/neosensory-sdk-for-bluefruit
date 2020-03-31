@@ -1,14 +1,44 @@
 /*
-  connect_and_vibrate.ino - Example for using
-  NeosensoryBluefruit library. Requires a Neosensory
-  Buzz and an Adafruit Feather board (or other board
-  that works with Adafruit's Bluefruit library).
-
-  Created by Mike V. Perrotta, January 23, 2020.
+ * Copyright 2020 Neosensory, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ * Please note that while this Neosensory SDK has an Apache 2.0 license, 
+ * usage of the Neosensory API to interface with Neosensory products is 
+ * still  subject to the Neosensory developer terms of service located at:
+ * https://neosensory.com/legal/dev-terms-service/
+ * 
+ * connect_and_vibrate.ino - Example for using
+ * NeosensoryBluefruit library. Requires a Neosensory
+ * Buzz and an Adafruit Feather board (or other board
+ * that works with Adafruit's Bluefruit library).
+ * 
+ * If you have trouble connecting, you can try putting 
+ * your Buzz into pairing mode by holding the (+) and (-) 
+ * buttons simultaneously until the blue LEDs flash.
+ *
+ * Created by Mike V. Perrotta, January 23, 2020.
+ *
 */
 
 #include <neosensory_bluefruit.h>
 
+/* 
+ * If there are multiple Buzz devices in proximity, 
+ * you can supply a Device ID for a specific Buzz.
+ * You can obtain this by connecting over USB (9600 Baud) 
+ * and running the command "device info"
+ */
 NeosensoryBluefruit NeoBluefruit;
 // NeosensoryBluefruit NeoBluefruit("F2 AD 50 EA 96 31");
 

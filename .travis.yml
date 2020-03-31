@@ -1,8 +1,8 @@
 sudo: false
 
 branches:
-  except:
-    - gh-pages
+  only:
+    - master
 
 addons:
   apt:
@@ -15,7 +15,7 @@ script:
 deploy:
   provider: pages
   skip_cleanup: true
+  keep_history: true
   github_token: $GH_REPO_TOKEN
-  committer_from_gh: true
   on:
-    branch: feature/travis-ci
+    branch: master
