@@ -16,7 +16,7 @@ This library connects any Neosensory hardware (currently just Buzz) to a microco
 
 ## Documentation
 
-See library documentation at https://neosensory.github.io/NeosensoryBluefruit. See GitHub repo at https://github.com/neosensory/neosensory-sdk-for-bluefruit.
+See library documentation at https://neosensory.github.io/neosensory-sdk-for-bluefruit/. See GitHub repo at https://github.com/neosensory/neosensory-sdk-for-bluefruit.
 
 ## Examples
 
