@@ -119,7 +119,7 @@ uint8_t* NeosensoryBluefruit::getDeviceAddress(void)
 
 bool NeosensoryBluefruit::startScan(void)
 {
-	Bluefruit.Scanner.start(0);
+	return Bluefruit.Scanner.start(0);
 }
 
 bool NeosensoryBluefruit::isConnected(void) {
