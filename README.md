@@ -22,6 +22,10 @@ See library documentation at https://neosensory.github.io/neosensory-sdk-for-blu
 
 See the [`connect_and_vibrate.ino`](https://github.com/neosensory/neosensory-sdk-for-bluefruit/blob/master/examples/connect_and_vibrate/connect_and_vibrate.ino) example.
 
+## Pairing
+
+Whether for the `connect_and_vibrate.ino` example or for your own project, you'll need to put Buzz into pairing mode the first time you connect to it. To do this, turn on your Buzz wristband and press and hold the plus and minus buttons on top of your Buzz. Buzz will show three blue LEDs and then a random pattern of LEDs (which is included in the advertising packet information in case you need to differentiate from several different Buzzes in pairing mode, but for most situations can be ignored). 
+
 ## License
 
 Please note that while this Neosensory SDK has an Apache 2.0 license, 
