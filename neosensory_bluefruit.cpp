@@ -421,7 +421,18 @@ void NeosensoryBluefruit::setButtonResponse(int enable, int allowSensitivity){
      sendCommand(args);
     sendCommand("\n");
 }
+void NeosensoryBluefruit::setLRAMode( int mode ){
+    static char args[2*sizeof(char)];
+    sprintf(args, " %d ", mode);
+    sendCommand("motors config_lra_mode");
+    sendCommand(args);
+    sendCommand("\n");
+}
+void NeosensoryBluefruit::getLRAMode(){
 
+    sendCommand("motors get_lra_mode");
+    sendCommand("\n");
+}
 /* Callbacks */
 
 void NeosensoryBluefruit::scanCallback(ble_gap_evt_adv_report_t* report)

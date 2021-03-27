@@ -286,7 +286,16 @@ class NeosensoryBluefruit
     
     /* LRA mode */
     
-    /*
+    /** @brief Set the behaivor of the LRA between open and closed loop
+     *  @param[in] mode an int that is either 0 for open loop ( the default ) or 1 for closed loop
+     *  @note Running the LRA's in closed loop at high intensity may damage them.
+     */
+    void setLRAMode( int mode );
+    /** @brief Get the current mode of the LRA
+     *  @note remeber if to look at the CLI response to access the returned data
+     */
+    void getLRAMode();
+    
 
   private:
     bool checkAddressMatches(uint8_t foundAddress[]);
