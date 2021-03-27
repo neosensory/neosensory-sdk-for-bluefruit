@@ -252,6 +252,23 @@ class NeosensoryBluefruit
      *  to the new array of intensities.
      */
     void vibrateMotors(float intensities[]);
+    
+    /* LEDS */
+    
+    /** @brief Set the colors of the LEDs on the wristband
+     *  @param[in] colorVals and array of char* that are the Hex represnetation of the
+     *  color for each of the 3 LEDs in the wristband.
+     *  @param[in] intensities an array of ints that are  the "brightness" of each LED
+     *  ranging from 0 ( off )  to 50 ( full glow )
+     
+     */
+    void setLeds( char *colorVals[], int intensities[] );
+ 
+       /**@brief Get the current colour Vals for the LEDs on the wrist band
+        *@note You will have to monitor the notifications from the CLI to get your
+        *response.
+        */
+    void getLeds();
 
   private:
     bool checkAddressMatches(uint8_t foundAddress[]);
