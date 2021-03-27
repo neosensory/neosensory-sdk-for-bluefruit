@@ -174,7 +174,7 @@ void onButtonPress( int buttonID ){
   if(buttonID == powerButton)
   {
     
-    Serial.println("\n PLUS BUTTON PRESS");
+    Serial.println("\n POWER BUTTON PRESS");
     int index = random(0,num_colors);
     current_color = colors[index];
     char * colors[] = {current_color,current_color,current_color};
