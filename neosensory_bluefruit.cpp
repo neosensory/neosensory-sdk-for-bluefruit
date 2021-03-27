@@ -390,7 +390,26 @@ void NeosensoryBluefruit::vibrateMotor(uint8_t motor, float intensity) {
 	vibrateMotors(motor_intensities);
 }
 
+/* LEDS */
+void NeosensoryBluefruit::setLeds(char *colorVals[],int intensities[])
+{
 
+    static char color_vals[64];
+    sprintf(color_vals, "%s %s %s", colorVals[0],colorVals[1],colorVals[2]);
+    char intensity_vals[64];
+    sprintf(intensity_vals,"%d %d %d", intensities[0],intensities[1],intensities[2]);
+    sendCommand("leds set ");
+    sendCommand(color_vals);
+    sendCommand(" ");
+    sendCommand(intensity_vals);
+    sendCommand("\n");
+}
+
+void NeosensoryBluefruit::getLeds()
+{
+    sendCommand("leds get");
+    sendCommand("\n");
+}
 /* Callbacks */
 
 void NeosensoryBluefruit::scanCallback(ble_gap_evt_adv_report_t* report)
