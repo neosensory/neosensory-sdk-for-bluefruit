@@ -39,7 +39,8 @@ class NeosensoryBluefruit
 {
     typedef void (*ConnectedCallback)(bool); 
     typedef void (*DisconnectedCallback)(uint16_t, uint8_t); 
-    typedef void (*ReadNotifyCallback)(BLEClientCharacteristic*, uint8_t*, uint16_t); 
+    typedef void (*ReadNotifyCallback)(BLEClientCharacteristic*, uint8_t*, uint16_t);
+    typedef void (*ButtonPressCallback)(int);
 
   public:
     /** @brief Constructor for new NeosensoryBluefruit object
@@ -315,6 +316,7 @@ class NeosensoryBluefruit
     ConnectedCallback externalConnectedCallback;
     DisconnectedCallback externalDisconnectedCallback;
     ReadNotifyCallback externalReadNotifyCallback;
+    ButtonPressCallback externalButtonPressCallback;
 
     /* Services & Characteristic UUIDs */
     uint8_t wb_service_uuid_[16];

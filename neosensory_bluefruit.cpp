@@ -462,6 +462,19 @@ void NeosensoryBluefruit::readNotifyCallback(
 	BLEClientCharacteristic* chr, uint8_t* data, uint16_t len) {
 	parseCliData(data, len);
 	externalReadNotifyCallback(chr, data, len);
+    if(jsonMessage_.indexOf("button")!=-1)
+    {
+
+        if(externalButtonPressCallback)
+        {
+            String buttonVal = "button_val";
+            int position = jsonMessage_.indexOf(buttonVal);
+
+            char b = jsonMessage_[position +buttonVal.length() + 3 ];
+             int buttonID = b-'0';
+            externalButtonPressCallback(buttonID);
+        }
+        jsonMessage_ = "";
 }
 
 void NeosensoryBluefruit::setConnectedCallback(
@@ -478,7 +491,10 @@ void NeosensoryBluefruit::setReadNotifyCallback(
 	ReadNotifyCallback readNotifyCallback) {
 	externalReadNotifyCallback = readNotifyCallback;
 }
-
+void NeosensoryBluefruit::setButtonPressCallback(ButtonPressCallback buttonPressCallback)
+{
+    externalButtonPressCallback = buttonPressCallback;
+}
 /* Callback Wrappers */
 NeosensoryBluefruit* NeosensoryBluefruit::NeoBluefruit = 0;
 
