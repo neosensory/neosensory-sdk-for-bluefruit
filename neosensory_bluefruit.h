@@ -296,6 +296,19 @@ class NeosensoryBluefruit
      */
     void getLRAMode();
     
+    /* Motor Thresholds*/
+    /** @brief Set the response and behavior of the band to the motors vibrate commands
+     *  @param[in] feedbackType an int that is either 0 ( default ) he motors vibrate
+     *  does not return a response unless an error occurs.  1 - Always respond
+     *  3 -  Threshold response. In this configuration, the motors vibrate command only
+     *  returns a response if the threshold is reached or exceeded.
+     *  @param[in] threshold int that is between 0 - 64
+     */
+    void setMotorThreshold( int feedbackType, int Threshold);
+    /** @brief Get the current threshold of the motors
+     */
+    void getMotorThreshold();
+    
 
   private:
     bool checkAddressMatches(uint8_t foundAddress[]);

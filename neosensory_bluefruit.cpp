@@ -421,6 +421,7 @@ void NeosensoryBluefruit::setButtonResponse(int enable, int allowSensitivity){
      sendCommand(args);
     sendCommand("\n");
 }
+/* LRA Mode */
 void NeosensoryBluefruit::setLRAMode( int mode ){
     static char args[2*sizeof(char)];
     sprintf(args, " %d ", mode);
@@ -432,6 +433,27 @@ void NeosensoryBluefruit::getLRAMode(){
 
     sendCommand("motors get_lra_mode");
     sendCommand("\n");
+}
+
+/* Motor thresholds */
+void NeosensoryBluefruit::getMotorThreshold(){
+    sendCommand("motors get_threshold");
+    sendCommand("\n");
+}
+void NeosensoryBluefruit::setMotorThreshold( int feedbackType, int threshold){
+
+
+        static char args[5*sizeof(char)];
+        sprintf(args, " %d %d ", feedbackType, threshold);
+        sendCommand("motors config_threshold  ");
+         sendCommand(args);
+        sendCommand("\n");
+
+}
+
+String NeosensoryBluefruit::getJson()
+{
+    return jsonMessage_;
 }
 /* Callbacks */
 
