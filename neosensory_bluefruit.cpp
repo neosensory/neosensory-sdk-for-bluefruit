@@ -410,6 +410,18 @@ void NeosensoryBluefruit::getLeds()
     sendCommand("leds get");
     sendCommand("\n");
 }
+
+/* Buttons */
+void NeosensoryBluefruit::setButtonResponse(int enable, int allowSensitivity){
+
+
+    static char args[5*sizeof(char)];
+    sprintf(args, " %d %d ", enable, allowSensitivity);
+    sendCommand("config set_buttons_response ");
+     sendCommand(args);
+    sendCommand("\n");
+}
+
 /* Callbacks */
 
 void NeosensoryBluefruit::scanCallback(ble_gap_evt_adv_report_t* report)

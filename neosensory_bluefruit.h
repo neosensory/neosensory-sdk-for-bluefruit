@@ -253,7 +253,7 @@ class NeosensoryBluefruit
      */
     void vibrateMotors(float intensities[]);
     
-    /* LEDS */
+    /* LED's */
     
     /** @brief Set the colors of the LEDs on the wristband
      *  @param[in] colorVals and array of char* that are the Hex represnetation of the
@@ -264,11 +264,28 @@ class NeosensoryBluefruit
      */
     void setLeds( char *colorVals[], int intensities[] );
  
-       /**@brief Get the current colour Vals for the LEDs on the wrist band
-        *@note You will have to monitor the notifications from the CLI to get your
-        *response.
-        */
+   /** @brief Get the current colour Vals for the LEDs on the wrist band
+    *  @note You will have to monitor the notifications from the CLI to get your
+    *  response.
+    */
     void getLeds();
+    
+    /* Buttons */
+    
+    /** @brief Set the response behaviour of the buttons on the wrist band
+     *  @param[in] enable  an int that is either 0 ( disabled ) were no CLI response
+     *  is genrerated or 1 (enabled) where full CLI response is generated.
+     *  @param[in] allowSensitivity an int which is either 0 ( not allowes ) or
+     *  1 ( allowed) which enables the sensitivity of the microphone to be adjusted by
+     *  the plus and minus buttons on the wristband
+     *  @notes rember to set a button listner callback or interpret the read notify to access
+     *  the response if you enable button response
+     */
+    void setButtonResponse(int enable, int allowSensitivity);
+    
+    /* LRA mode */
+    
+    /*
 
   private:
     bool checkAddressMatches(uint8_t foundAddress[]);
