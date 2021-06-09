@@ -468,14 +468,20 @@ void NeosensoryBluefruit::scanCallback(ble_gap_evt_adv_report_t* report)
 
 void NeosensoryBluefruit::connectCallback(uint16_t conn_handle)
 {
+if ( !conn->bonded() )
+  {
+    conn->requestPairing();
+		  
+  }
 	bool success = true;
 	if (!wb_service_.discover(conn_handle) ||
 		!wb_write_characteristic_.discover() ||
 		!wb_read_characteristic_.discover() ||
-		!wb_read_characteristic_.enableNotify() ||
-		!Bluefruit.requestPairing(conn_handle) ||
-		!Bluefruit.connPaired(conn_handle))
-	{
+		!wb_read_characteristic_.enableNotify()||
+		//!Bluefruit.requestPairing(conn_handle) ||
+		//!Bluefruit.connPaired(conn_handle)
+		!conn->bonded()
+	)
 		Bluefruit.disconnect(conn_handle);
 		success = false;
 	}
