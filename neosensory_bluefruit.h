@@ -39,7 +39,8 @@ class NeosensoryBluefruit
 {
     typedef void (*ConnectedCallback)(bool); 
     typedef void (*DisconnectedCallback)(uint16_t, uint8_t); 
-    typedef void (*ReadNotifyCallback)(BLEClientCharacteristic*, uint8_t*, uint16_t); 
+    typedef void (*ReadNotifyCallback)(BLEClientCharacteristic*, uint8_t*, uint16_t);
+    typedef void (*ButtonPressCallback)(int);
 
   public:
     /** @brief Constructor for new NeosensoryBluefruit object
@@ -252,6 +253,62 @@ class NeosensoryBluefruit
      *  to the new array of intensities.
      */
     void vibrateMotors(float intensities[]);
+    
+    /* LED's */
+    
+    /** @brief Set the colors of the LEDs on the wristband
+     *  @param[in] colorVals and array of char* that are the Hex represnetation of the
+     *  color for each of the 3 LEDs in the wristband.
+     *  @param[in] intensities an array of ints that are  the "brightness" of each LED
+     *  ranging from 0 ( off )  to 50 ( full glow )
+     
+     */
+    void setLeds( char *colorVals[], int intensities[] );
+ 
+   /** @brief Get the current colour Vals for the LEDs on the wrist band
+    *  @note You will have to monitor the notifications from the CLI to get your
+    *  response.
+    */
+    void getLeds();
+    
+    /* Buttons */
+    
+    /** @brief Set the response behaviour of the buttons on the wrist band
+     *  @param[in] enable  an int that is either 0 ( disabled ) were no CLI response
+     *  is genrerated or 1 (enabled) where full CLI response is generated.
+     *  @param[in] allowSensitivity an int which is either 0 ( not allowes ) or
+     *  1 ( allowed) which enables the sensitivity of the microphone to be adjusted by
+     *  the plus and minus buttons on the wristband
+     *  @notes rember to set a button listner callback or interpret the read notify to access
+     *  the response if you enable button response
+     */
+    void setButtonResponse(int enable, int allowSensitivity);
+    
+    /* LRA mode */
+    
+    /** @brief Set the behaivor of the LRA between open and closed loop
+     *  @param[in] mode an int that is either 0 for open loop ( the default ) or 1 for closed loop
+     *  @note Running the LRA's in closed loop at high intensity may damage them.
+     */
+    void setLRAMode( int mode );
+    /** @brief Get the current mode of the LRA
+     *  @note remeber if to look at the CLI response to access the returned data
+     */
+    void getLRAMode();
+    
+    /* Motor Thresholds*/
+    /** @brief Set the response and behavior of the band to the motors vibrate commands
+     *  @param[in] feedbackType an int that is either 0 ( default ) he motors vibrate
+     *  does not return a response unless an error occurs.  1 - Always respond
+     *  3 -  Threshold response. In this configuration, the motors vibrate command only
+     *  returns a response if the threshold is reached or exceeded.
+     *  @param[in] threshold int that is between 0 - 64
+     */
+    void setMotorThreshold( int feedbackType, int Threshold);
+    /** @brief Get the current threshold of the motors
+     */
+    void getMotorThreshold();
+    
 
   private:
     bool checkAddressMatches(uint8_t foundAddress[]);
@@ -281,6 +338,7 @@ class NeosensoryBluefruit
     ConnectedCallback externalConnectedCallback;
     DisconnectedCallback externalDisconnectedCallback;
     ReadNotifyCallback externalReadNotifyCallback;
+    ButtonPressCallback externalButtonPressCallback;
 
     /* Services & Characteristic UUIDs */
     uint8_t wb_service_uuid_[16];

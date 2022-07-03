@@ -390,7 +390,71 @@ void NeosensoryBluefruit::vibrateMotor(uint8_t motor, float intensity) {
 	vibrateMotors(motor_intensities);
 }
 
+/* LEDS */
+void NeosensoryBluefruit::setLeds(char *colorVals[],int intensities[])
+{
 
+    static char color_vals[64];
+    sprintf(color_vals, "%s %s %s", colorVals[0],colorVals[1],colorVals[2]);
+    char intensity_vals[64];
+    sprintf(intensity_vals,"%d %d %d", intensities[0],intensities[1],intensities[2]);
+    sendCommand("leds set ");
+    sendCommand(color_vals);
+    sendCommand(" ");
+    sendCommand(intensity_vals);
+    sendCommand("\n");
+}
+
+void NeosensoryBluefruit::getLeds()
+{
+    sendCommand("leds get");
+    sendCommand("\n");
+}
+
+/* Buttons */
+void NeosensoryBluefruit::setButtonResponse(int enable, int allowSensitivity){
+
+
+    static char args[5*sizeof(char)];
+    sprintf(args, " %d %d ", enable, allowSensitivity);
+    sendCommand("config set_buttons_response ");
+     sendCommand(args);
+    sendCommand("\n");
+}
+/* LRA Mode */
+void NeosensoryBluefruit::setLRAMode( int mode ){
+    static char args[2*sizeof(char)];
+    sprintf(args, " %d ", mode);
+    sendCommand("motors config_lra_mode");
+    sendCommand(args);
+    sendCommand("\n");
+}
+void NeosensoryBluefruit::getLRAMode(){
+
+    sendCommand("motors get_lra_mode");
+    sendCommand("\n");
+}
+
+/* Motor thresholds */
+void NeosensoryBluefruit::getMotorThreshold(){
+    sendCommand("motors get_threshold");
+    sendCommand("\n");
+}
+void NeosensoryBluefruit::setMotorThreshold( int feedbackType, int threshold){
+
+
+        static char args[5*sizeof(char)];
+        sprintf(args, " %d %d ", feedbackType, threshold);
+        sendCommand("motors config_threshold  ");
+         sendCommand(args);
+        sendCommand("\n");
+
+}
+
+String NeosensoryBluefruit::getJson()
+{
+    return jsonMessage_;
+}
 /* Callbacks */
 
 void NeosensoryBluefruit::scanCallback(ble_gap_evt_adv_report_t* report)
@@ -404,14 +468,20 @@ void NeosensoryBluefruit::scanCallback(ble_gap_evt_adv_report_t* report)
 
 void NeosensoryBluefruit::connectCallback(uint16_t conn_handle)
 {
+if ( !conn->bonded() )
+  {
+    conn->requestPairing();
+		  
+  }
 	bool success = true;
 	if (!wb_service_.discover(conn_handle) ||
 		!wb_write_characteristic_.discover() ||
 		!wb_read_characteristic_.discover() ||
-		!wb_read_characteristic_.enableNotify() ||
-		!Bluefruit.requestPairing(conn_handle) ||
-		!Bluefruit.connPaired(conn_handle))
-	{
+		!wb_read_characteristic_.enableNotify()||
+		//!Bluefruit.requestPairing(conn_handle) ||
+		//!Bluefruit.connPaired(conn_handle)
+		!conn->bonded()
+	)
 		Bluefruit.disconnect(conn_handle);
 		success = false;
 	}
@@ -431,6 +501,19 @@ void NeosensoryBluefruit::readNotifyCallback(
 	BLEClientCharacteristic* chr, uint8_t* data, uint16_t len) {
 	parseCliData(data, len);
 	externalReadNotifyCallback(chr, data, len);
+    if(jsonMessage_.indexOf("button")!=-1)
+    {
+
+        if(externalButtonPressCallback)
+        {
+            String buttonVal = "button_val";
+            int position = jsonMessage_.indexOf(buttonVal);
+
+            char b = jsonMessage_[position +buttonVal.length() + 3 ];
+             int buttonID = b-'0';
+            externalButtonPressCallback(buttonID);
+        }
+        jsonMessage_ = "";
 }
 
 void NeosensoryBluefruit::setConnectedCallback(
@@ -447,7 +530,10 @@ void NeosensoryBluefruit::setReadNotifyCallback(
 	ReadNotifyCallback readNotifyCallback) {
 	externalReadNotifyCallback = readNotifyCallback;
 }
-
+void NeosensoryBluefruit::setButtonPressCallback(ButtonPressCallback buttonPressCallback)
+{
+    externalButtonPressCallback = buttonPressCallback;
+}
 /* Callback Wrappers */
 NeosensoryBluefruit* NeosensoryBluefruit::NeoBluefruit = 0;
 
