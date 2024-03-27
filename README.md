@@ -10,6 +10,27 @@ Download the latest zip file from the [releases page](https://github.com/neosens
 
 This library depends on Adafruit's Bluefruit library, included in the [Adafruit Board Support Package (BSP) for nRF52 Boards](https://github.com/adafruit/Adafruit_nRF52_Arduino#bsp-installation) (make sure to go through the install instructions thoroughly and update your bootloader) and on [adamvr's base64 library](https://github.com/adamvr/arduino-base64).
 
+Last Known Working Dependencies:
+Board Manager: 
+
+Adafruit nRF52: 0.16.0
+
+Library Manager:
+
+Adafruit BNO55: 1.1.11
+
+Adafruit Unified Sensor: 1.1.2
+
+SD: 1.2.4
+
+base64: 1.0.0
+
+Adafruit BusIO: 1.13.2
+
+Arduino BNO55: 1.2.0
+
+Adafruit ADXL343: 1.6.1
+
 ## Hardware
 
 This library connects any Neosensory hardware (currently just Buzz) to a microcontroller with an nRF52 BLE chip. At this point, it has only been tested with the [Adafruit Feather nRF52](https://www.adafruit.com/product/3406) and [nRF52840 Express](https://www.adafruit.com/product/4062) but should work with any of [Adafruit's Bluefruit nRF52 boards](https://github.com/adafruit/Adafruit_nRF52_Arduino#arduino-core-for-adafruit-bluefruit-nrf52-boards).
